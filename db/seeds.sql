@@ -1,0 +1,1 @@
+/* Use this Seeds for SQL table to insert dummy data */
