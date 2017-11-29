@@ -23,10 +23,12 @@
     "express-messages": "*",
     "express-session": "*",
     "express-validator": "*",
+    "http": "0.0.0",
     "mysql": "*",
     "passport": "*",
     "passport-http": "*",
-    "passport-local": "*"
+    "passport-local": "*",
+    "websocket": "^1.0.25"
   },
   "bugs": {
     "url": "https://github.com/kowens32/login_system-/issues"
