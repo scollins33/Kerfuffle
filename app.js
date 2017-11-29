@@ -10,6 +10,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const mySql = require('mysql');
 
+
 // var connection = mysql.createConnection({
 //     host: "localhost",
 //     port: 3306,
@@ -50,6 +51,7 @@ app.use(session({
     saveUninitialized: true,
     resave: true
 }));
+
 
 
 //Passport init
