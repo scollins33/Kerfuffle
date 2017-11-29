@@ -88,6 +88,7 @@ app.use(function(req, res, next){
     next();
 });
 
+app.use(express.static('public'));
 app.use('/', routes);
 app.use('/users', users);
 
