@@ -14,7 +14,7 @@ button.on('click', function () {
 
     // create the connection variable
     // use the 'ws://' so that the HTTP server upgrades the request to use the WebSocket standard
-    let connection = new WebSocket('ws://' + location.hostname);
+    let connection = new WebSocket('wss://' + location.hostname);
 
     // when we open the connection, write to the console so we know it happened
     connection.onopen = function () {
