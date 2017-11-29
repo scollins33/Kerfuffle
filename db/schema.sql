@@ -9,8 +9,6 @@ DROP DATABASE trivia_db;
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     wins INT NULL,
     losses INT NULL,
-    correct INT NULL,
-    incorrect INT NULL,
     PRIMARY KEY (user_id)
   );
 
@@ -19,6 +17,8 @@ DROP DATABASE trivia_db;
     round INT NULL,
     user_id INT NULL,
     user_guess INT NULL,
+    correct INT NULL,
+    incorrect INT NULL,
     PRIMARY KEY (game_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
   );
