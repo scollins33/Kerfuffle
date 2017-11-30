@@ -12,6 +12,8 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const mySql = require('mysql');
 
+const GameRoom = require('./models/gameroom');
+
 // var connection = mysql.createConnection({
 //     host: "localhost",
 //     port: 3306,
@@ -107,6 +109,7 @@ const wsServer = new WebSocketServer({
 
 // websocket array to manage all connections
 let wsConnections = [];
+let roomArray = [];
 
 // listen for websocket requests
 wsServer.on('request', (request) => {
@@ -116,30 +119,36 @@ wsServer.on('request', (request) => {
     wsConnections.push(connection);
 
     // log that the connection happened
-    console.log(`${connection.remoteAddress} connected using ${connection.webSocketVersion}`);
+    console.log(`${connection.remoteAddress} has been granted a websocket`);
+    console.log(connection);
 
     // immediately send a message to the client using the new connection
     connection.sendUTF(JSON.stringify({
         type: 'welcome',
-        msg: 'Welcome to the server! You have joined a new room'
+        msg: 'Welcome to the server!'
     }));
 
     // set up the listener for messages from the client connection
     connection.on('message', (message) => {
-        // need to use the utf8Data section - since we stringify JSON you need to parse it
-        console.log(JSON.parse(message.utf8Data).msg);
+        // get the data from the message
+        let data = JSON.parse(message.utf8Data);
 
-        // send a message back to the client connection saying we get the message
-        // this is unnecessary but proves the 2 way connection - at this point you're emulating the Request/Response paradigm
-        // send UTF of a stringfied JSON object
-        connection.sendUTF(
-            JSON.stringify(
-                {
-                    type: 'info',
-                    msg: 'I got your message'
-                }
-            )
-        );
+        switch (data.type) {
+            case "alert":
+                console.log(data.msg);
+                break;
+            case "newroom":
+                roomArray.push(new GameRoom());
+                console.log(`Room Array: ${roomArray}`);
+                console.log(`Last room added: ${roomArray[roomArray.length-1]}`);
+                sendRoom(connection, roomArray[roomArray.length-1]);
+                break;
+            case "join-request":
+                joinRoom(connection, data.room);
+                break;
+            default:
+                break;
+        }
     });
 
     // listener for the connection closer
@@ -157,3 +166,29 @@ wsServer.on('request', (request) => {
         }
     })
 });
+
+function sendRoom(pConnection, pRoom) {
+    pConnection.sendUTF(JSON.stringify({
+        type: 'room-data',
+        room: pRoom.roomCode
+    }));
+}
+
+function joinRoom(pConnection, pCode) {
+    let joined = false;
+
+    roomArray.forEach((each) => {
+        if (pCode === each.roomCode) {
+            each.users.push(pConnection);
+            joined = true;
+            sendRoom(pConnection, each);
+        }
+    });
+
+    if (!joined) {
+        pConnection.sendUTF(JSON.stringify({
+            type: 'info',
+            msg: 'There is no room with that code'
+        }));
+    }
+}
