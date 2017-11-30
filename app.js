@@ -117,7 +117,7 @@ wsServer.on('request', (request) => {
     wsConnections.push(connection);
 
     // log that the connection happened
-    logit(`${connection.remoteAddress} connected using ${connection.webSocketVersion}`);
+    console.log(`${connection.remoteAddress} connected using ${connection.webSocketVersion}`);
 
     // immediately send a message to the client using the new connection
     connection.sendUTF(JSON.stringify({
@@ -128,7 +128,7 @@ wsServer.on('request', (request) => {
     // set up the listener for messages from the client connection
     connection.on('message', (message) => {
         // need to use the utf8Data section - since we stringify JSON you need to parse it
-        logit(JSON.parse(message.utf8Data).msg);
+        console.log(JSON.parse(message.utf8Data).msg);
 
         // send a message back to the client connection saying we get the message
         // this is unnecessary but proves the 2 way connection - at this point you're emulating the Request/Response paradigm
