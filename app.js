@@ -33,6 +33,9 @@ const mySql = require('mysql');
 let routes = require('./routes/index');
 let users = require('./routes/users');
 
+//Set Port
+let PORT = process.env.PORT || 3000;
+
 //Init App and HTTP server
 let app = express();
 let server = http.createServer(app);
@@ -92,13 +95,10 @@ app.use(express.static('public'));
 app.use('/', routes);
 app.use('/users', users);
 
-//Set Port
-app.set('port', (process.env.PORT || 3000));
 
-app.listen(app.get('port'), function(){
-    console.log('Server started on port ' +app.get('port'));
+server.listen(PORT, () => {
+    console.log(`Server started on Port ${PORT}`);
 });
-
 
 
 // create your websocket server using the HTTP server
