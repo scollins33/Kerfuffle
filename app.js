@@ -111,4 +111,4 @@ const wsServer = new WebSocketServer({
 let wsConnections = [];
 
 // listen for websocket requests
-wsServer.on('request', wsRoutes);
+wsServer.on('request', wsRoutes(request, wsConnections));

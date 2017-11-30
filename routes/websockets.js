@@ -1,8 +1,8 @@
-module.exports = function (request) {
+module.exports = function (pRequest, pConnections) {
     // create a connection when accepting the websocket request
-    let connection = request.accept(null, request.origin);
+    let connection = pRequest.accept(null, pRequest.origin);
     // add the connection to the array
-    wsConnections.push(connection);
+    pConnections.push(connection);
 
     // log that the connection happened
     console.log(`${connection.remoteAddress} connected using ${connection.webSocketVersion}`);
@@ -37,12 +37,12 @@ module.exports = function (request) {
         console.log(connection.remoteAddress + " disconnected");
 
         // find the index value in the websocket array
-        let index = wsConnections.indexOf(connection);
+        let index = pConnections.indexOf(connection);
 
         // remove that connection from the websocket array
         if (index !== -1) {
             // remove the connection from the pool
-            wsConnections.splice(index, 1);
+            pConnections.splice(index, 1);
         }
     })
 }
