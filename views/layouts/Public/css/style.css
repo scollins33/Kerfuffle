@@ -2,8 +2,6 @@
 body {
     padding-top: 20px;
     padding-bottom: 20px;
-    background-image: url("test.jpeg");
-    color: bisque;
 
 }
 
@@ -24,8 +22,7 @@ body {
 .header h3 {
     margin-top: 0;
     margin-bottom: 0;
-    color: bisque;
-
+    line-height: 40px;
 }
 
 /* Custom page footer */
@@ -84,7 +81,6 @@ body {
 
 .page-header {
     margin-top: 0;
-    color: bisque;
 }
 
 footer {

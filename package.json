@@ -29,8 +29,8 @@
     "passport": "*",
     "passport-http": "*",
     "passport-local": "*",
-    "shortid": "^2.2.8",
-    "websocket": "^1.0.25"
+    "shortid": "2.2.8",
+    "websocket": "1.0.25"
   },
   "bugs": {
     "url": "https://github.com/kowens32/login_system-/issues"
