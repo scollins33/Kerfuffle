@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "./node_modules/.bin/nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -34,5 +35,8 @@
   "bugs": {
     "url": "https://github.com/kowens32/login_system-/issues"
   },
-  "homepage": "https://github.com/kowens32/login_system-#readme"
+  "homepage": "https://github.com/kowens32/login_system-#readme",
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  }
 }

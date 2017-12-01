@@ -1,8 +1,11 @@
-const shortid = require('shortid');
-
-let GameRoom = function () {
-    this.roomCode = shortid.generate();
+let GameRoom = function (pID) {
+    this.roomCode = pID;
     this.users = [];
+    this.isActive = true;
+};
+
+GameRoom.prototype.addUser = function (pConnection) {
+    this.users.push(pConnection);
 };
 
 GameRoom.prototype.getQuestions = function () {

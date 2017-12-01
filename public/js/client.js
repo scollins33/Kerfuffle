@@ -72,12 +72,14 @@ connect.on('click', function () {
         }));
     });
 
+    // send new room message
     newroom.on('click', function () {
         connection.send(JSON.stringify({
             type: 'newroom'
         }));
     });
 
+    // send join room message
     joinroom.on('click', function () {
         connection.send(JSON.stringify({
             type: 'join-request',

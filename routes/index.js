@@ -1,5 +1,7 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+let router = express.Router();
+
+let GameRoom = require('../models/GameRoom');
 
 //Get Homepage
 router.get('/', function(req,res){
@@ -9,5 +11,6 @@ router.get('/', function(req,res){
 router.get('/client', (req, res) => {
     res.render('client');
 });
+
 
 module.exports = router;
