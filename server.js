@@ -22,10 +22,12 @@ const GameInstance = new GameServer();
 
 db.sequelize.sync({ force: true })
   .then(function() {
-    // Start the HTTP Server
-    server.listen(PORT, () => {
-      console.log(`Server started on Port ${PORT}`);
-    });
+
+});
+
+// Start the HTTP Server
+server.listen(PORT, () => {
+  console.log(`Server started on Port ${PORT}`);
 });
 
 // Websocket Server events

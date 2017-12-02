@@ -1,5 +1,5 @@
 // Require Question model
-const Questions = require('./Questions');
+const Questions = require('../models/db/Questions.js');
 
 /*
     gameId
