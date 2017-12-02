@@ -1,6 +1,6 @@
 // Sequelize model for Questions Table
 module.exports = function(sequelize, DataTypes) {
-    var qTable = sequelize.define("qTable", {
+    const qTable = sequelize.define("qTable", {
         question: {
             type: DataTypes.STRING,
             allowNull: false,

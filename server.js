@@ -1,7 +1,8 @@
 const http = require('http');
 const Websocket = require('ws');
 const app = require('./app');
-const db = require('./models/questions')
+const db = require('./models/db');
+
 
 // Set Port
 const PORT = process.env.PORT || 3000;
@@ -22,15 +23,18 @@ wsserver.on('connection', (ws) => {
 });
 
 
-//Sequelize stuff that I hate
-db.sequelize.sync({ force: true}).then(function() {
+
 // Start the HTTP Server
     server.listen(PORT, () => {
         console.log(`Server started on Port ${PORT}`);
     });
+
+
+
+db.sequelize.sync({ force: true }).then(function() {
+    app.listen(PORT, function() {
+        console.log("App listening on PORT " + PORT);
+    });
 });
-
-
-
 
 

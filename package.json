@@ -1,16 +1,16 @@
 {
   "name": "login_system-",
   "version": "1.0.0",
-  "description": "",
+  "description": "ker-fuf-fle noun  BRITISH  informal \"a commotion or fuss, especially one caused by conflicting views.\"",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "./node_modules/.bin/nodemon server.js"
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/scollins33/Kerfuffle.git"
+    "url": "git+https://github.com/scollins33/Kerfuffle.git"
   },
   "author": "",
   "license": "ISC",
@@ -34,5 +34,8 @@
   "homepage": "https://github.com/scollins33/Kerfuffle#readme",
   "devDependencies": {
     "nodemon": "^1.12.1"
+  },
+  "directories": {
+    "lib": "lib"
   }
 }
