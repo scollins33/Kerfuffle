@@ -11,7 +11,7 @@ let thisGame;
 let thisQuestion = null;
 let myAns = null;
 
-// set your websocket
+// Set your Websocket
 window.WebSocket = window.WebSocket || window.MozWebSocket;
 
 // IIFE to connect to websocket and handle button events
@@ -36,6 +36,13 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
         return JSON.parse(pMessage.data);
     }
 
+    // Update Player Roster
+    function updatePlayers(pPlayerList) {
+        pPlayerList.forEach((each) => {
+            players.append(`<li>${each}</li>`)
+        });
+    }
+
     // Update Question & Answers
     function updateQuestion (pQuestion, pA, pB, pC, pD) {
         question.html(pQuestion);
@@ -53,7 +60,7 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
 
     // localhost used for testing
     // location.host gives us the PORT
-    // location.hostname doesnt use PORT (this is for heroku)
+    // location.hostname doesnt use PORT (this is for Heroku)
     let wsURL;
     if (location.hostname === 'localhost') {
         wsURL = location.host;
@@ -79,8 +86,15 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
                 me = data.userId;
                 thisGame = data.gameId;
                 break;
+            case 'player-update':
+                updatePlayers(data.playerList);
+                break;
             case 'new-question':
-
+                updateQuestion(data.questionInfo.questionText,
+                    data.questionInfo.answerA,
+                    data.questionInfo.answerB,
+                    data.questionInfo.answerC,
+                    data.questionInfo.answerD);
                 break;
             default:
                 console.log('Recieved a message but couldnt understand it');
@@ -88,11 +102,12 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
         }
     };
 
+
     // JQUERY EVENT LISTENERS
     // --------------------------------
 
     $('button').on('click', function () {
-        myAns = this.attr('value');
+        myAns = $(this).attr('value');
         const msg = encode('answer',
             me,
             thisGame,
@@ -104,4 +119,3 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
     });
 
 })();
-
