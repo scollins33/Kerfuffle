@@ -73,6 +73,15 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
     const connection = new WebSocket('ws://' + wsURL);
     connection.onopen = function () {
         console.log('We got a connection!');
+
+        const msg = encode('joining',
+            null,
+            null,
+            null,
+            null,
+            null);
+
+        connection.send(msg)
     };
 
     // listener for messages from the server
@@ -97,7 +106,7 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
                     data.questionInfo.answerD);
                 break;
             default:
-                console.log('Recieved a message but couldnt understand it');
+                console.log('Received a message but could not understand it');
                 console.log(data);
         }
     };

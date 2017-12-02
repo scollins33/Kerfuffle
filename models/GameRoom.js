@@ -1,21 +1,37 @@
 // Require Question model
+const Questions = require('./Questions');
 
+/*
+    gameId
+        > shortid of the game, also the key value in the GameServer
+    questions
+        > Array of Question objects
+    users
+        > Object of User objects
+    currentIndex
+        > Index of the questions array (current round)
+    intervalId
+        > Interval to trigger main logic
+ */
 
+class GameRoom {
+    // Constructor
+    // Takes shortid generated as its name
+    constructor(pID) {
+        this.gameId = pID;
+        this.questions = [];
+        this.users = {};
+        this.currentIndex = 0;
+        this.intervalId = null;
+    }
 
-let GameRoom = function (pID) {
-    this.roomCode = pID;
-    this.users = [];
-    this.isActive = true;
-};
+    // SETTERS
+    // --------------------------------
 
-GameRoom.prototype.addUser = function (pConnection) {
-    this.users.push(pConnection);
-};
-
-GameRoom.prototype.getQuestions = function () {
-    // temporary until we have a SQLZ ORM to get ten random questions
-    this.questionArray = [
-        {
+    // Use Sequelize Questions model to get random questions
+    // Should be an array for easy looping / tracking
+    setQuestions() {
+        const testQs = [{
             "question": "A flashing red traffic light signifies that a driver should do what?",
             "A": "stop",
             "B": "speed up",
@@ -29,30 +45,64 @@ GameRoom.prototype.getQuestions = function () {
             "C": "lemon custard",
             "D": "raspberry jelly",
             "answer": "A"
-        }, {
-            "question": "A pita is a type of what?",
-            "A": "fresh fruit",
-            "B": "flat bread",
-            "C": "French tart",
-            "D": "friend bean dip",
-            "answer": "B"
-        }, {
-            "question": "A portrait that comically exaggerates a person's physical traits is called a what?",
-            "A": "landscape",
-            "B": "caricature",
-            "C": "still life",
-            "D": "Impressionism",
-            "answer": "B"
-        }, {
-            "question": "A second-year college student is usually called a what?",
-            "A": "sophomore",
-            "B": "senior",
-            "C": "freshman ",
-            "D": "junior ",
-            "answer": "A"
-        }
-    ]
-};
+        }];
 
+        this.questions = testQs;
+    }
+
+    // Main Game Logic
+    /*
+    On Each Interval (main logic):
+		Tally scores for all user.gameId === gameId
+			Evaluate user.answer vs game.question.answer
+			Clear user.answer (null)
+		Update Leaderboard
+		Update game.questionId
+		Push new question out
+     */
+    runMain() {
+        console.log(`Current Round: ${this.getRound()}`);
+    }
+
+    // Start the game Interval to run main logic
+    // 15 seconds = 900,000 milliseconds
+    startInterval() {
+        if (this.intervalId === null) {
+            this.intervalId = setInterval(() => {
+                // Run Main Logic for this round
+                this.runMain();
+
+                // Iterate up to the next question
+                this.currentIndex += 1;
+            }, 900000)
+        }
+    }
+
+    // End the Interval (game over)
+    endInterval() {
+        clearInterval(this.intervalId);
+    }
+
+    //
+    addUser(pUser) {
+        this[pUser] = pUser;
+    }
+
+
+    // GETTERS
+    // --------------------------------
+
+    getRound() {
+        return this.currentIndex;
+    }
+
+    getQuestions() {
+        return this.questions;
+    }
+
+    getUsers() {
+        return this.users;
+    }
+}
 
 module.exports = GameRoom;
