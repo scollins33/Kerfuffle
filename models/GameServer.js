@@ -1,9 +1,16 @@
 const shortid = require('shortid');
 const GameRoom = require('./GameRoom');
 
+// lobby is an object of Users waiting to be moved to GameRooms
 class GameServer {
     constructor() {
         this.rooms = {};
+        this.lobby = {};
+    }
+
+    joinLobby(pUser) {
+        this.lobby[pUser] = pUser;
+        console.log(`${pUser.userId} has joined the Lobby`);
     }
 
     createRoom() {
@@ -17,6 +24,15 @@ class GameServer {
         } else {
             return false;
         }
+    }
+
+    // Move User from Lobby to Room
+
+    // GETTERS
+    // --------------------------------
+
+    getLobby() {
+        return this.lobby;
     }
 }
 

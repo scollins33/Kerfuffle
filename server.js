@@ -16,7 +16,7 @@ const server = http.createServer(app);
 const wsserver = new Websocket.Server({ server });
 
 // Initialize the Game Server
-const GameServer = new GameServer();
+const GameInstance = new GameServer();
 
 // Start the HTTP Server
 server.listen(PORT, () => {
@@ -24,27 +24,31 @@ server.listen(PORT, () => {
 });
 
 // Websocket Server events
-wsserver.on('connection', (client) => {
+wsserver.on('connection', (conn) => {
 
     // when you receive a message, flow into switch case
-    client.on('message', (message) => {
-        console.log(decode(message));
+    conn.on('message', (message) => {
+        console.log(`Received Message from Client: ${message}`);
+        console.log(`Decoded Message from Client: ${decode(message)}`);
 
         const data = decode(message);
 
         switch (data.type) {
             case 'joining':
-                const player = new User(client);
-                const msg = encode('welcome',
-                    player.getUserId());
+                const player = new User(conn);
 
-                client.send(msg);
+                console.log(`Sending ${player} to the Lobby`);
+                GameInstance.joinLobby(player);
+
+                tellClient(player.connection,
+                    'welcome',
+                    player.userId,
+                    null, GameInstance.lobby, null, null, null);
                 break;
             default:
                 console.log('Received a message but could not understand it');
         }
     });
-
 
 });
 
@@ -52,21 +56,22 @@ wsserver.on('connection', (client) => {
 // HELPER FUNCTIONS
 // --------------------------------
 
-// Package Message
-function encode (pType, pUser, pGame, pQuestion, pAnswer, pCommand) {
-    return JSON.stringify({
-        type: pType,
-        userId: pUser,
-        gameId: pGame,
-        questionId: pQuestion,
-        answerChoice: pAnswer,
-        command: pCommand
-    });
+// Package Message & Send
+function tellClient (pClient, pType, pUser, pGame, pPlayers, pQuestionId, pQuestionInfo, pCommand) {
+    pClient.send(
+        JSON.stringify({
+            type: pType,
+            userId: pUser,
+            gameId: pGame,
+            playerList: pPlayers,
+            questionId: pQuestionId,
+            questionInfo: pQuestionInfo,
+            command: pCommand
+        })
+    );
 }
 
 // Decode Message
 function decode (pMessage) {
-    return JSON.parse(pMessage.data);
+    return JSON.parse(pMessage);
 }
-
-// Build User

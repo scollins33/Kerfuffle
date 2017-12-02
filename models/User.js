@@ -3,8 +3,11 @@ const shortid = require('shortid');
 class User {
     constructor(pConnection) {
         this.userId = `Anon_${shortid.generate()}`;
-        this.wsId = pConnection;
+        this.connection = pConnection;
     }
+
+    // GETTERS
+    // --------------------------------
 
     getUserId() {
         return this.userId;
