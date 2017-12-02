@@ -1,3 +1,7 @@
+// Require Question model 
+
+
+
 let GameRoom = function (pID) {
     this.roomCode = pID;
     this.users = [];
