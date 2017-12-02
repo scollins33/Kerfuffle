@@ -6,6 +6,11 @@ const ansB = $('#ansB');
 const ansC = $('#ansC');
 const ansD = $('#ansD');
 
+let me;
+let thisGame;
+let thisQuestion = null;
+let myAns = null;
+
 // set your websocket
 window.WebSocket = window.WebSocket || window.MozWebSocket;
 
@@ -29,6 +34,15 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
     // Decode Message
     function decode (pMessage) {
         return JSON.parse(pMessage.data);
+    }
+
+    // Update Question & Answers
+    function updateQuestion (pQuestion, pA, pB, pC, pD) {
+        question.html(pQuestion);
+        ansA.html(pA);
+        ansB.html(pB);
+        ansC.html(pC);
+        ansD.html(pD);
     }
 
     // WEBSOCKET CODE
@@ -60,16 +74,13 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
         const data = decode(message);
 
         // switch case to handle incoming messages
-        switch (json.type) {
+        switch (data.type) {
             case 'welcome':
-                question.html(json.msg);
+                me = data.userId;
+                thisGame = data.gameId;
                 break;
-            case 'info':
-                players.append(json.msg);
-                break;
-            case 'room-data':
-                myRoom = json.room;
-                console.log(`Joined Game Room ${myRoom}`);
+            case 'new-question':
+
                 break;
             default:
                 console.log('Recieved a message but couldnt understand it');
@@ -81,7 +92,7 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
     // --------------------------------
 
     $('button').on('click', function () {
-        const myAns = this.attr('value');
+        myAns = this.attr('value');
         const msg = encode('answer',
             me,
             thisGame,
