@@ -1,3 +1,5 @@
+var Sequelize = require('sequelize');
+
 // Sequelize model for Questions Table
 module.exports = function(sequelize, DataTypes) {
     var qTable = sequelize.define("qTable", {
@@ -22,6 +24,11 @@ module.exports = function(sequelize, DataTypes) {
 
     return qTable;
 };
+
+module.exports = db;
+
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 // Initial Build and sync
 
 // Add

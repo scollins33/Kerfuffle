@@ -1,7 +1,7 @@
 const http = require('http');
 const Websocket = require('ws');
 const app = require('./app');
-const db = require('./models')
+const db = require('./models/questions')
 
 // Set Port
 const PORT = process.env.PORT || 3000;
