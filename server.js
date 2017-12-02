@@ -2,6 +2,8 @@
 const http = require('http');
 const Websocket = require('ws');
 const app = require('./app');
+const db = require('./models/db');
+
 
 // Game Imports
 const GameServer = require('./models/GameServer');
@@ -18,9 +20,12 @@ const wsserver = new Websocket.Server({ server });
 // Initialize the Game Server
 const GameInstance = new GameServer();
 
-// Start the HTTP Server
-server.listen(PORT, () => {
-    console.log(`Server started on Port ${PORT}`);
+db.sequelize.sync({ force: true })
+  .then(function() {
+    // Start the HTTP Server
+    server.listen(PORT, () => {
+      console.log(`Server started on Port ${PORT}`);
+    });
 });
 
 // Websocket Server events

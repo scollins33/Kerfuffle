@@ -4,6 +4,8 @@ THIS IS REPLACED BY SEQUELIZE
 THIS SHOULD BE WRITTEN AS AN ORM USING SEQUELIZE
 
 */
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
 
 CREATE DATABASE kerfuffle;
 USE kerfuffle;
@@ -26,8 +28,6 @@ CREATE TABLE games (
   user_id INT NULL,
   user_guess INT NULL,
   PRIMARY KEY (game_id),
-  FOREIGN KEY (user_id) REFERENCES users(user_id)
-);
 
 CREATE TABLE questions (
   question_id INTEGER(10) AUTO_INCREMENT NOT NULL,
