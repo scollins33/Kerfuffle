@@ -11,6 +11,8 @@ const wsserver = new Websocket.Server({ server });
 
 // Websocket Server events
 wsserver.on('connection', (ws) => {
+
+    // when you receive a message, flow into switch case
     ws.on('message', (message) => {
         console.log(message);
     });
