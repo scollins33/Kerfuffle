@@ -2,37 +2,34 @@
   "name": "login_system-",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node server.js",
+    "dev": "./node_modules/.bin/nodemon server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kowens32/login_system-.git"
+    "url": "https://github.com/scollins33/Kerfuffle.git"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "*",
-    "body-parser": "*",
-    "connect-flash": "*",
-    "cookie-parser": "^1.4.1",
-    "express": "*",
-    "express-handlebars": "*",
-    "express-messages": "*",
-    "express-session": "*",
-    "express-validator": "*",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.2",
+    "express-handlebars": "^3.0.0",
     "http": "0.0.0",
-    "mysql": "*",
-    "passport": "*",
-    "passport-http": "*",
-    "passport-local": "*",
+    "mysql": "^2.15.0",
+    "passport": "^0.4.0",
     "shortid": "2.2.8",
-    "websocket": "1.0.25"
+    "ws": "^3.3.2"
   },
   "bugs": {
-    "url": "https://github.com/kowens32/login_system-/issues"
+    "url": "https://github.com/scollins33/Kerfuffle"
   },
-  "homepage": "https://github.com/kowens32/login_system-#readme"
+  "homepage": "https://github.com/scollins33/Kerfuffle#readme",
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  }
 }

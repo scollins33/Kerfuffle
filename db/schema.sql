@@ -1,5 +1,12 @@
-CREATE DATABASE trivia_db;
-USE trivia_db;
+/*
+
+THIS IS REPLACED BY SEQUELIZE
+THIS SHOULD BE WRITTEN AS AN ORM USING SEQUELIZE
+
+*/
+
+CREATE DATABASE kerfuffle;
+USE kerfuffle;
 
 CREATE TABLE users (
   user_id int NOT NULL AUTO_INCREMENT,
@@ -23,11 +30,12 @@ CREATE TABLE games (
 );
 
 CREATE TABLE questions (
-  question_id INTEGER(11) AUTO_INCREMENT NOT NULL,
-  question TEXT,
+  question_id INTEGER(10) AUTO_INCREMENT NOT NULL,
+  question_text TEXT,
   answer_a VARCHAR(255),
   answer_b VARCHAR(255),
   answer_c VARCHAR(255),
   answer_d VARCHAR(255),
+  correct_answer VARCHAR(2),
   PRIMARY KEY (question_id)
 );
