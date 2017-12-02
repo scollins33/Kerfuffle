@@ -19,9 +19,9 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
     // HELPER FUNCTIONS
     // --------------------------------
 
-    // Package Message
-    function encode (pType, pUser, pGame, pQuestion, pAnswer, pCommand) {
-        return JSON.stringify({
+    // Package Message & Send
+    function tellServer (pType, pUser, pGame, pQuestion, pAnswer, pCommand) {
+        const msg = JSON.stringify({
             type: pType,
             userId: pUser,
             gameId: pGame,
@@ -29,6 +29,9 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
             answerChoice: pAnswer,
             command: pCommand
         });
+
+        console.log(`Telling Server: ${msg}`);
+        connection.send(msg);
     }
 
     // Decode Message
@@ -73,18 +76,27 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
     const connection = new WebSocket('ws://' + wsURL);
     connection.onopen = function () {
         console.log('We got a connection!');
+        tellServer('joining',
+            null,
+            null,
+            null,
+            null,
+            null);
     };
 
     // listener for messages from the server
     connection.onmessage = function (message) {
         // take the message we receive and parse the JSON from it
+        console.log(`Raw Message from Server: ${message}`);
+        console.log(`Decoded Message from Server: ${decode(message)}`);
         const data = decode(message);
 
         // switch case to handle incoming messages
         switch (data.type) {
+            // welcome from server, set userId
             case 'welcome':
                 me = data.userId;
-                thisGame = data.gameId;
+                console.log(data.playerList);
                 break;
             case 'player-update':
                 updatePlayers(data.playerList);
@@ -97,7 +109,7 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
                     data.questionInfo.answerD);
                 break;
             default:
-                console.log('Recieved a message but couldnt understand it');
+                console.log('Received a message but could not understand it');
                 console.log(data);
         }
     };

@@ -1,26 +1,16 @@
 const shortid = require('shortid');
 const GameRoom = require('./GameRoom');
 
-// let GameServer = function () {
-//     this.rooms = {};
-// };
-//
-// GameServer.prototype.createRoom = function () {
-//     let code = shortid.generate();
-//     this.rooms[code] = new GameRoom(code);
-// };
-//
-// GameServer.prototype.joinRoom = function (pConnection, pRoom) {
-//     if (this.rooms.hasOwnProperty(pRoom)) {
-//         this.rooms[pRoom].addUser(pConnection);
-//     } else {
-//         return false;
-//     }
-// };
-
+// lobby is an object of Users waiting to be moved to GameRooms
 class GameServer {
     constructor() {
         this.rooms = {};
+        this.lobby = {};
+    }
+
+    joinLobby(pUser) {
+        this.lobby[pUser] = pUser;
+        console.log(`${pUser.userId} has joined the Lobby`);
     }
 
     createRoom() {
@@ -28,12 +18,21 @@ class GameServer {
         this.rooms[code] = new GameRoom(code);
     }
 
-    joinRoom() {
+    joinRoom(pRoom, pConnection) {
         if (this.rooms.hasOwnProperty(pRoom)) {
             this.rooms[pRoom].addUser(pConnection);
         } else {
             return false;
         }
+    }
+
+    // Move User from Lobby to Room
+
+    // GETTERS
+    // --------------------------------
+
+    getLobby() {
+        return this.lobby;
     }
 }
 
