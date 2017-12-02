@@ -49,7 +49,7 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
 
     // create the connection
     // when we open the connection alert in the console
-    let connection = new WebSocket('ws://' + wsURL);
+    const connection = new WebSocket('ws://' + wsURL);
     connection.onopen = function () {
         console.log('We got a connection!');
     };
@@ -80,8 +80,16 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
     // JQUERY EVENT LISTENERS
     // --------------------------------
 
-    $('button').on('click', () => {
+    $('button').on('click', function () {
+        const myAns = this.attr('value');
+        const msg = encode('answer',
+            me,
+            thisGame,
+            thisQuestion,
+            myAns,
+            null);
 
+        connection.send(msg);
     });
 
 })();
