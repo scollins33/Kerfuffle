@@ -20,13 +20,15 @@ const wsserver = new Websocket.Server({ server });
 // Initialize the Game Server
 const GameInstance = new GameServer();
 
+
+// Sync Sequelize & Start the HTTP Server
 db.sequelize.sync({ force: true })
-  .then(function() {
-    // Start the HTTP Server
+  .then(() => {
     server.listen(PORT, () => {
       console.log(`Server started on Port ${PORT}`);
     });
 });
+
 
 // Websocket Server events
 wsserver.on('connection', (conn) => {
