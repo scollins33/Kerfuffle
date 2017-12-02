@@ -20,6 +20,13 @@ const wsserver = new Websocket.Server({ server });
 // Initialize the Game Server
 const GameInstance = new GameServer();
 
+// Create Game POST & redirect
+// this route is here since it needs access to GameInstance
+app.post('/create', (req, res) => {
+    let newRoom = GameInstance.createRoom();
+    console.log(`Created Room # ${newRoom}`);
+    res.redirect(`/rooms/${newRoom}`);
+});
 
 // Sync Sequelize & Start the HTTP Server
 db.sequelize.sync({ force: true })
@@ -35,22 +42,24 @@ wsserver.on('connection', (conn) => {
 
     // when you receive a message, flow into switch case
     conn.on('message', (message) => {
-        console.log(`Received Message from Client: ${message}`);
-        console.log(`Decoded Message from Client: ${decode(message)}`);
-
         const data = decode(message);
 
         switch (data.type) {
             case 'joining':
+                const theirGame = data.gameId.slice(7);
                 const player = new User(conn);
 
-                console.log(`Sending ${player} to the Lobby`);
-                GameInstance.joinLobby(player);
+                console.log(`Sending ${player.userId} to the ${theirGame} lobby`);
+                GameInstance.joinRoom(theirGame, player);
 
-                tellClient(player.connection,
-                    'welcome',
+                tellClient(player.connection, 'welcome',
                     player.userId,
-                    null, GameInstance.lobby, null, null, null);
+                    theirGame, null, null, null, null);
+                break;
+            case 'start-game':
+                break;
+            case 'answer':
+                console.log(data);
                 break;
             default:
                 console.log('Received a message but could not understand it');

@@ -6,12 +6,6 @@ router.get('/', (req,res) => {
     res.render('index');
 });
 
-// Create Game POST & redirect
-router.post('/create', (req, res) => {
-
-});
-
-
 // Join Game POST & redirect
 router.post('/join/:id', (req, res) => {
     const targetRoom = req.params.id;
@@ -19,13 +13,13 @@ router.post('/join/:id', (req, res) => {
     // check if the room exists
         // accept and join
             // serve redirect
-            res.redirect(`/${targetRoom}`);
+            res.redirect(`/rooms/${targetRoom}`);
         // reject and notify
             // serve rejection
 });
 
 // Game Room GET (from redirect)
-router.get('/:id', (req, res) => {
+router.get('/rooms/:id', (req, res) => {
     res.render('gameroom');
 });
 

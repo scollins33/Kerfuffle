@@ -78,7 +78,7 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
         console.log('We got a connection!');
         tellServer('joining',
             null,
-            null,
+            location.pathname,
             null,
             null,
             null);
@@ -88,15 +88,18 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
     connection.onmessage = function (message) {
         // take the message we receive and parse the JSON from it
         console.log(`Raw Message from Server: ${message}`);
-        console.log(`Decoded Message from Server: ${decode(message)}`);
         const data = decode(message);
+        console.log(`Decoded Message from Server: ${data}`);
+        console.log(data);
 
         // switch case to handle incoming messages
         switch (data.type) {
             // welcome from server, set userId
             case 'welcome':
                 me = data.userId;
-                console.log(data.playerList);
+                thisGame = data.gameId;
+                console.log(`My username: ${me}`);
+                console.log(`My Room #: ${thisGame}`);
                 break;
             case 'player-update':
                 updatePlayers(data.playerList);
@@ -120,14 +123,12 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
 
     $('button').on('click', function () {
         myAns = $(this).attr('value');
-        const msg = encode('answer',
+        tellServer('answer',
             me,
             thisGame,
             thisQuestion,
             myAns,
             null);
-
-        connection.send(msg);
     });
 
 })();
