@@ -1,18 +1,24 @@
 const express = require('express');
 const router = express.Router();
 
-//register
-router.get('/register', function(req,res){
+// GET Register page
+router.get('/register', (req,res) => {
+    // All we have to do is serve the register page
     res.render('register');
 });
 
-//login
-router.get('/login', function(req,res){
-    res.render('login');
-});
+// POST New User to server
+router.post('/register', (req,res) => {
+    // Pull form data
 
-//register user
-router.post('/register', function(req,res){
+    // POST form data to the server
+
+    // Check if the User already exits in the DB
+        // If so, throw error
+
+        // Else create new User
+            // After creation, redirect to the Admin or Dashboard
+
    const name = req.body.name;
    const email = req.body.email;
    const username = req.body.email;
@@ -38,5 +44,24 @@ router.post('/register', function(req,res){
     }
 
 });
+
+// GET Login Page
+router.get('/login', (req,res) => {
+    // All we have to do is serve the login page
+    res.render('login');
+});
+
+// POST Login Credentials to server
+router.post('/login', (req, res) => {
+    // Check if User is valid
+        // If they are check their Access Level
+            // If Admin server Admin page
+
+            // Else serve User Dashboard
+
+        // Else serve Reject/Register page
+        res.render('register');
+});
+
 
 module.exports = router;

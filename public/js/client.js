@@ -6,8 +6,8 @@ const ansB = $('#ansB');
 const ansC = $('#ansC');
 const ansD = $('#ansD');
 
-let me;
-let thisGame;
+let me = 'TEST_PLAYER';
+let thisGame = 'SHORTID';
 let thisQuestion = null;
 let myAns = null;
 

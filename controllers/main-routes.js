@@ -19,7 +19,7 @@ router.post('/join/:id', (req, res) => {
     // check if the room exists
         // accept and join
             // serve redirect
-            res.redirect(`/${gameId}`);
+            res.redirect(`/${targetRoom}`);
         // reject and notify
             // serve rejection
 });

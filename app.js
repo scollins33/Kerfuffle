@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 
-const genericRoutes = require('./controllers/generic-routes');
+const genericRoutes = require('./controllers/main-routes');
 const userRoutes = require('./controllers/user-routes');
 
 // Init App
