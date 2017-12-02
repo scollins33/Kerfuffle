@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 //register
 router.get('/register', function(req,res){
@@ -13,11 +13,11 @@ router.get('/login', function(req,res){
 
 //register user
 router.post('/register', function(req,res){
-   var name = req.body.name;
-   var email = req.body.email;
-   var username = req.body.email;
-   var password = req.body.password;
-   var password2 = req.body.password2;
+   const name = req.body.name;
+   const email = req.body.email;
+   const username = req.body.email;
+   const password = req.body.password;
+   const password2 = req.body.password2;
 
 
    //Validation
@@ -27,7 +27,7 @@ router.post('/register', function(req,res){
     req.checkBody('username', 'Username is required').notEmpty();
     req.checkBody('password', 'Password is required').notEmpty();
     req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
-    var errors = req.validationErrors();
+    const errors = req.validationErrors();
 
     if(errors){
        res.render('register', {

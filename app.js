@@ -1,45 +1,26 @@
+/*
+App File
+    Generates Express App with all middleware applied
+ */
+
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
-const expressValidator = require('express-validator');
-const flash = require('connect-flash');
-const session = require('express-session');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const PlayerStrategy = require('./lib/anonym-shortid').Strategy;
 
-// var connection = mysql.createConnection({
-//     host: "localhost",
-//     port: 3306,
-//
-//     // Your username
-//     user: "root",
-//
-//     // Your password
-//     password: "",
-//     database: "blank for right now"
-// });
-//
-// connection.connect(function(err) {
-//     if (err) throw err;
-//     console.log("connected as id " + connection.threadId + "\n");
-//     createProduct();
-// });
+const genericRoutes = require('./controllers/generic-routes');
+const userRoutes = require('./controllers/user-routes');
 
-let routes = require('./routes/index');
-let users = require('./routes/users');
+// Init App
+const app = express();
 
-//Init App and HTTP server
-let app = express();
-
-//View Engine
+// View Engine - Handlebars
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout: 'layouts'}));
 app.set('view engine', 'handlebars');
 
-//BodyParser Middleware
+// BodyParser Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(cookieParser());
@@ -53,7 +34,7 @@ app.use(cookieParser());
 
 
 //Passport init
-app.use(passport.initialize());
+// app.use(passport.initialize());
 // app.use(passport.session());
 
 
@@ -85,8 +66,11 @@ app.use(passport.initialize());
 //     next();
 // });
 
+// Attach the static Public folder
+// bring in the routers
 app.use(express.static('public'));
-app.use('/', routes);
-app.use('/users', users);
+app.use('/', genericRoutes);
+app.use('/users', userRoutes);
+
 
 module.exports = app;

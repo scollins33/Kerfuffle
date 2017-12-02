@@ -1,5 +1,5 @@
 const shortid = require('shortid');
-const GameRoom = require('GameRoom');
+const GameRoom = require('./GameRoom');
 
 // let GameServer = function () {
 //     this.rooms = {};
