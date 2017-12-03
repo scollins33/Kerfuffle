@@ -102,9 +102,8 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
             // welcome from server, set userId
             case 'welcome':
                 me = data.userId;
-                thisGame = data.gameId;
                 console.log(`My username: ${me}`);
-                console.log(`My Room #: ${thisGame}`);
+                console.log(`My Room #: ${myGame}`);
                 break;
             case 'player-update':
                 updatePlayers(data.playerList);
@@ -130,7 +129,7 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
         myAns = $(this).attr('value');
         tellServer('answer',
             me,
-            thisGame,
+            myGame,
             thisQuestion,
             myAns,
             null);
