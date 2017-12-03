@@ -5,12 +5,6 @@ const GameRoom = require('./GameRoom');
 class GameServer {
     constructor() {
         this.rooms = {};
-        this.lobby = {};
-    }
-
-    joinLobby(pUser) {
-        this.lobby[pUser] = pUser;
-        console.log(`${pUser.userId} has joined the Lobby`);
     }
 
     createRoom() {
