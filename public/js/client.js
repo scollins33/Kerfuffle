@@ -7,7 +7,7 @@ const ansC = $('#ansC');
 const ansD = $('#ansD');
 
 let me = 'TEST_PLAYER';
-let thisGame = 'SHORTID';
+let myGame = 'SHORTID';
 let thisQuestion = null;
 let myAns = null;
 
@@ -71,14 +71,19 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
         wsURL = location.hostname
     }
 
+    // set the gameId
+    myGame = location.pathname.slice(7);
+
     // create the connection
-    // when we open the connection alert in the console
     const connection = new WebSocket('ws://' + wsURL);
+
+    // when we open the connection alert in the console
+    // then ask the server to be assigned to the game
     connection.onopen = function () {
         console.log('We got a connection!');
         tellServer('joining',
             null,
-            location.pathname,
+            myGame,
             null,
             null,
             null);

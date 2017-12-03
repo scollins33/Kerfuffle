@@ -24,7 +24,6 @@ const GameInstance = new GameServer();
 // this route is here since it needs access to GameInstance
 app.post('/create', (req, res) => {
     let newRoom = GameInstance.createRoom();
-    console.log(`Created Room # ${newRoom}`);
     res.redirect(`/rooms/${newRoom}`);
 });
 
@@ -46,13 +45,15 @@ wsserver.on('connection', (conn) => {
 
         switch (data.type) {
             case 'joining':
-                const theirGame = data.gameId.slice(7);
+                const theirGame = data.gameId;
                 const player = new User(conn);
 
                 console.log(`Sending ${player.userId} to the ${theirGame} lobby`);
                 GameInstance.joinRoom(theirGame, player);
 
-                tellClient(player.connection, 'welcome',
+                // Tell Client their ID
+                tellClient(player.connection,
+                    'welcome',
                     player.userId,
                     theirGame, null, null, null, null);
                 break;
