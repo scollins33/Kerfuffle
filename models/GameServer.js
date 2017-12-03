@@ -5,23 +5,22 @@ const GameRoom = require('./GameRoom');
 class GameServer {
     constructor() {
         this.rooms = {};
-        this.lobby = {};
-    }
-
-    joinLobby(pUser) {
-        this.lobby[pUser] = pUser;
-        console.log(`${pUser.userId} has joined the Lobby`);
     }
 
     createRoom() {
+        shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$@');
         const code = shortid.generate();
         this.rooms[code] = new GameRoom(code);
+        console.log(`Created Room # ${code}`);
+        return code;
     }
 
-    joinRoom(pRoom, pConnection) {
+    joinRoom(pRoom, pPlayer) {
         if (this.rooms.hasOwnProperty(pRoom)) {
-            this.rooms[pRoom].addUser(pConnection);
+            this.rooms[pRoom].addUser(pPlayer);
+            console.log(`${pPlayer.userId} has joined Room # ${pRoom}`);
         } else {
+            console.log(`${pRoom} does not exist...`);
             return false;
         }
     }
@@ -31,8 +30,12 @@ class GameServer {
     // GETTERS
     // --------------------------------
 
-    getLobby() {
-        return this.lobby;
+    getRooms() {
+        return this.rooms;
+    }
+
+    checkRoom(pRoom) {
+        return this.rooms.hasOwnProperty(pRoom);
     }
 }
 

@@ -1,5 +1,5 @@
 // Require Question model
-const Questions = require('../models/db/Questions.js');
+const Questions = require('./db/Questions');
 
 /*
     gameId
@@ -85,7 +85,7 @@ class GameRoom {
 
     //
     addUser(pUser) {
-        this[pUser] = pUser;
+        this.users[pUser] = pUser;
     }
 
 

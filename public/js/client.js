@@ -7,7 +7,7 @@ const ansC = $('#ansC');
 const ansD = $('#ansD');
 
 let me = 'TEST_PLAYER';
-let thisGame = 'SHORTID';
+let myGame = 'SHORTID';
 let thisQuestion = null;
 let myAns = null;
 
@@ -71,14 +71,19 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
         wsURL = location.hostname
     }
 
+    // set the gameId
+    myGame = location.pathname.slice(7);
+
     // create the connection
-    // when we open the connection alert in the console
     const connection = new WebSocket('ws://' + wsURL);
+
+    // when we open the connection alert in the console
+    // asks to be assigned a userId & tells what game to be assigned to
     connection.onopen = function () {
         console.log('We got a connection!');
         tellServer('joining',
             null,
-            null,
+            myGame,
             null,
             null,
             null);
@@ -88,19 +93,23 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
     connection.onmessage = function (message) {
         // take the message we receive and parse the JSON from it
         console.log(`Raw Message from Server: ${message}`);
-        console.log(`Decoded Message from Server: ${decode(message)}`);
         const data = decode(message);
+        console.log(`Decoded Message from Server: ${data}`);
+        console.log(data);
 
         // switch case to handle incoming messages
         switch (data.type) {
             // welcome from server, set userId
             case 'welcome':
                 me = data.userId;
-                console.log(data.playerList);
+                console.log(`My username: ${me}`);
+                console.log(`My Room #: ${myGame}`);
                 break;
+            // broadcast of the players in the room
             case 'player-update':
                 updatePlayers(data.playerList);
                 break;
+            // broadcast when a new question is pushed
             case 'new-question':
                 updateQuestion(data.questionInfo.questionText,
                     data.questionInfo.answerA,
@@ -120,14 +129,12 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
 
     $('button').on('click', function () {
         myAns = $(this).attr('value');
-        const msg = encode('answer',
+        tellServer('answer',
             me,
-            thisGame,
+            myGame,
             thisQuestion,
             myAns,
             null);
-
-        connection.send(msg);
     });
 
 })();

@@ -20,37 +20,66 @@ const wsserver = new Websocket.Server({ server });
 // Initialize the Game Server
 const GameInstance = new GameServer();
 
+
+// POST to room route
+// this route is here since it needs access to GameInstance
+app.post('/rooms/:id', (req, res) => {
+    // if id is new, create a new room
+    if (req.params.id === 'new') {
+        const newRoom = GameInstance.createRoom();
+        res.redirect(`/rooms/${newRoom}`);
+    } else {
+        const targetRoom = req.params.id;
+        // check if the room exists
+        if (GameInstance.checkRoom(targetRoom)) {
+            // if it does, send response so AJAX can redirect
+            res.send(`/rooms/${targetRoom}`);
+        } else {
+            // if it does not, render main page again
+            res.render('index');
+        }
+    }
+});
+
+
+// Sync Sequelize & Start the HTTP Server
 db.sequelize.sync({ force: true })
-  .then(function() {
-
+  .then(() => {
+    server.listen(PORT, () => {
+      console.log(`Server started on Port ${PORT}`);
+    });
 });
 
-// Start the HTTP Server
-server.listen(PORT, () => {
-  console.log(`Server started on Port ${PORT}`);
-});
 
 // Websocket Server events
 wsserver.on('connection', (conn) => {
 
     // when you receive a message, flow into switch case
     conn.on('message', (message) => {
-        console.log(`Received Message from Client: ${message}`);
-        console.log(`Decoded Message from Client: ${decode(message)}`);
-
         const data = decode(message);
 
         switch (data.type) {
+            // handle new users connecting for the 1st time
+            // produce userId and join named gameId
             case 'joining':
+                const theirGame = data.gameId;
                 const player = new User(conn);
 
-                console.log(`Sending ${player} to the Lobby`);
-                GameInstance.joinLobby(player);
+                console.log(`Sending ${player.userId} to the ${theirGame} lobby`);
+                GameInstance.joinRoom(theirGame, player);
 
+                // Tell user their ID
                 tellClient(player.connection,
                     'welcome',
                     player.userId,
-                    null, GameInstance.lobby, null, null, null);
+                    theirGame, null, null, null, null);
+                break;
+            // notification from the lobby players to start the game
+            case 'start-game':
+                break;
+            // process answers as they flow in from players
+            case 'answer':
+                console.log(data);
                 break;
             default:
                 console.log('Received a message but could not understand it');
