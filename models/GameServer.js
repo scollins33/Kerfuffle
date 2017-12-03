@@ -33,6 +33,10 @@ class GameServer {
     getRooms() {
         return this.rooms;
     }
+
+    checkRoom(pRoom) {
+        return this.rooms.hasOwnProperty(pRoom);
+    }
 }
 
 module.exports = GameServer;

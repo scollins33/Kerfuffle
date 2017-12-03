@@ -2,11 +2,24 @@
 
 <p> Welcome to Kerfuffle where everything's made up and the points don't matter!</p>
 
-<form action="/create" method="post">
+<form action="/rooms/new" method="post">
     <input type="submit" name="create" class="btn-link" value="Create Room">
 </form>
 
-<form>
-    <input type="text" name="room" id="joinRoom">
-    <input type="submit" name="join" class="btn-link" value="Join Room">
-</form>
+<input type="text" name="room" id="joinRoom">
+<input type="submit" id="joinPost" class="btn-link" value="Join Room">
+
+<script type="text/javascript">
+    $('#joinPost').on('click', function (event) {
+        event.preventDefault();
+
+        const room = $('#joinRoom').val().trim();
+        const joinURL = '/rooms/' + room;
+
+        $.post(joinURL, function (data, status) {
+            console.log(`POST Room # ${room}`);
+            console.log(data);
+            window.location = data;
+        });
+    });
+</script>
