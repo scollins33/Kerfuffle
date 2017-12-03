@@ -78,7 +78,7 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
     const connection = new WebSocket('ws://' + wsURL);
 
     // when we open the connection alert in the console
-    // then ask the server to be assigned to the game
+    // asks to be assigned a userId & tells what game to be assigned to
     connection.onopen = function () {
         console.log('We got a connection!');
         tellServer('joining',
@@ -105,9 +105,11 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
                 console.log(`My username: ${me}`);
                 console.log(`My Room #: ${myGame}`);
                 break;
+            // broadcast of the players in the room
             case 'player-update':
                 updatePlayers(data.playerList);
                 break;
+            // broadcast when a new question is pushed
             case 'new-question':
                 updateQuestion(data.questionInfo.questionText,
                     data.questionInfo.answerA,

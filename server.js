@@ -20,12 +20,27 @@ const wsserver = new Websocket.Server({ server });
 // Initialize the Game Server
 const GameInstance = new GameServer();
 
-// Create Game POST & redirect
+
+// POST to room route
 // this route is here since it needs access to GameInstance
-app.post('/create', (req, res) => {
-    let newRoom = GameInstance.createRoom();
-    res.redirect(`/rooms/${newRoom}`);
+app.post('/rooms/:id', (req, res) => {
+    // if id is new, create a new room
+    if (req.params.id === 'new') {
+        const newRoom = GameInstance.createRoom();
+        res.redirect(`/rooms/${newRoom}`);
+    } else {
+        const targetRoom = req.params.id;
+        // check if the room exists
+        if (GameInstance.checkRoom(targetRoom)) {
+            // if it does, send response so AJAX can redirect
+            res.send(`/rooms/${targetRoom}`);
+        } else {
+            // if it does not, render main page again
+            res.render('index');
+        }
+    }
 });
+
 
 // Sync Sequelize & Start the HTTP Server
 db.sequelize.sync({ force: true })
@@ -44,6 +59,8 @@ wsserver.on('connection', (conn) => {
         const data = decode(message);
 
         switch (data.type) {
+            // handle new users connecting for the 1st time
+            // produce userId and join named gameId
             case 'joining':
                 const theirGame = data.gameId;
                 const player = new User(conn);
@@ -51,14 +68,16 @@ wsserver.on('connection', (conn) => {
                 console.log(`Sending ${player.userId} to the ${theirGame} lobby`);
                 GameInstance.joinRoom(theirGame, player);
 
-                // Tell Client their ID
+                // Tell user their ID
                 tellClient(player.connection,
                     'welcome',
                     player.userId,
                     theirGame, null, null, null, null);
                 break;
+            // notification from the lobby players to start the game
             case 'start-game':
                 break;
+            // process answers as they flow in from players
             case 'answer':
                 console.log(data);
                 break;
