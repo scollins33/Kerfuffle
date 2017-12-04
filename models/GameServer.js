@@ -10,10 +10,13 @@ class GameServer {
         this.rooms = {};
         this.lobby = [];
         this.heartbeatInterval = setInterval(() => {
+            // This is the garbage cleanup interval
             console.log('Server is still good');
             // check all connections to remove dead ones
                 // if you find a dead one check all players
                     // remove dead player
+            // check all rooms for [ room.isCompleted === true ]
+                // remove room if it is done
         }, 30000);
     }
 
