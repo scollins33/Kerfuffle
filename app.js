@@ -72,5 +72,10 @@ app.use(express.static('public'));
 app.use('/', genericRoutes);
 app.use('/users', userRoutes);
 
+// GET for the SSL Cert
+app.get('/.well-known/acme-challenge/:content', function(req, res) {
+    res.sendfile(path.join(__dirname + '/certfile.txt'));
+});
+
 
 module.exports = app;
