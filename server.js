@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 3000;
 const server = http.createServer(app);
 const wsserver = new Websocket.Server({ server });
 
-// Initialize the Game Server
+// Initialize the Game Server & connections array
 const GameInstance = new GameServer();
 
 
@@ -53,6 +53,7 @@ db.sequelize.sync({ force: true })
 
 // Websocket Server events
 wsserver.on('connection', (conn) => {
+    GameInstance.addToLobby(conn);
 
     // when you receive a message, flow into switch case
     conn.on('message', (message) => {
@@ -76,16 +77,22 @@ wsserver.on('connection', (conn) => {
                 break;
             // notification from the lobby players to start the game
             case 'start-game':
+                console.log(`Received Start command for ${data.gameId}`);
+                GameInstance.rooms[data.gameId].startGame();
                 break;
             // process answers as they flow in from players
             case 'answer':
-                console.log(data);
+                GameInstance.rooms[data.gameId].users[data.userId].setAnswer(data.answerChoice);
                 break;
             default:
                 console.log('Received a message but could not understand it');
         }
     });
 
+    // listener for the connection closer
+    conn.on('close', () => {
+        GameInstance.removeFromLobby(conn);
+    });
 });
 
 

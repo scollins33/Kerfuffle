@@ -1,4 +1,3 @@
-// Require Question model
 const Questions = require('./db/Questions');
 
 /*
@@ -12,6 +11,9 @@ const Questions = require('./db/Questions');
         > Index of the questions array (current round)
     intervalId
         > Interval to trigger main logic
+    inProgress
+        > true = valid game, should stay in server list
+        > false = remove game on next cleanup of Server
  */
 
 class GameRoom {
@@ -23,6 +25,7 @@ class GameRoom {
         this.users = {};
         this.currentIndex = 0;
         this.intervalId = null;
+        this.inProgress = true;
     }
 
     // SETTERS
@@ -61,20 +64,56 @@ class GameRoom {
 		Push new question out
      */
     runMain() {
-        console.log(`Current Round: ${this.getRound()}`);
+        // this = GameRoom
+        console.log(`Current Round: ${this.currentIndex}`);
+        console.log(`currentIndex: ${this.currentIndex}`);
+        console.log(`current Q answer: ${this.questions[this.currentIndex].answer}`);
+        for (let each in this.users) {
+            let thisPlayer = this.users[each];
+            console.log(thisPlayer.currentAnswer);
+            if (thisPlayer.currentAnswer === null) {
+                console.log(`${thisPlayer.userId} has no answer`);
+            }
+            else if (thisPlayer.currentAnswer === this.questions[this.currentIndex].answer) {
+                thisPlayer.score += 1;
+                thisPlayer.inform('result', thisPlayer.userId, this.gameId,
+                    null, this.currentIndex, null, 'You got it right!');
+            }
+            else {
+                thisPlayer.inform('result', thisPlayer.userId, this.gameId,
+                    null, this.currentIndex, null, 'You got it wrong!');
+            }
+
+            thisPlayer.clearAnswer();
+            console.log(thisPlayer.currentAnswer);
+            console.log(thisPlayer.score);
+
+            // push new question
+        }
     }
 
     // Start the game Interval to run main logic
     // 15 seconds = 900,000 milliseconds
-    startInterval() {
+    startGame() {
+        // this = GameRoom
         if (this.intervalId === null) {
+            this.setQuestions();
+            this.checkQuestions();
+
             this.intervalId = setInterval(() => {
+                console.log('RUNNING INTERVAL');
+                // this = GameRoom
                 // Run Main Logic for this round
                 this.runMain();
 
                 // Iterate up to the next question
                 this.currentIndex += 1;
-            }, 900000)
+
+                // If the index is past the array length, game is over
+                if (this.currentIndex >= this.questions.length) {
+                    this.endGame();
+                }
+            }, 15000)
         }
     }
 
@@ -83,18 +122,28 @@ class GameRoom {
         clearInterval(this.intervalId);
     }
 
-    //
+    // Adds user to the room
     addUser(pUser) {
-        this.users[pUser] = pUser;
+        this.users[pUser.userId] = pUser;
+    }
+
+    // Removes user from the the room
+    removeUser(pUser) {
+        delete this.users[pUser];
+        console.log(`${pUser} has left the game room.`);
+    }
+
+    // End the game
+    // Total the scores, present the results, clear the Interval, etc
+    endGame() {
+        console.log(`${this.gameId} HAS ENDED`);
+        this.endInterval();
+        this.inProgress = false;
     }
 
 
     // GETTERS
     // --------------------------------
-
-    getRound() {
-        return this.currentIndex;
-    }
 
     getQuestions() {
         return this.questions;
@@ -102,6 +151,10 @@ class GameRoom {
 
     getUsers() {
         return this.users;
+    }
+
+    checkQuestions() {
+        console.log(this.questions);
     }
 }
 
