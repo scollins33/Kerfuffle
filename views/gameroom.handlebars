@@ -1,18 +1,26 @@
 <div class="container">
+    <!-- Game Lobby and Start Button -->
     <div id="row">
-        <div class="col-xs-3">
+        <div class="col-xs-8">
             <h1>This is the Player List</h1>
             <ul id="players">
                 <li>Player_1</li>
                 <!-- PLayers Go Here - append <li> -->
             </ul>
         </div>
-        <div class="col-xs-9">
+        <div class="col-xs-4">
+            <button id="startGame" class="btn">Start Game</button>
+        </div>
+    </div>
+
+    <!-- Game Row with Q and Answers -->
+    <div class="row">
+        <div class="col-xs-12">
             <span id="question">Question Text Here</span>
-            <button id="ansA" value="A">A</button>
-            <button id="ansB" value="B">B</button>
-            <button id="ansC" value="C">C</button>
-            <button id="ansD" value="D">D</button>
+            <button id="ansA" class="answer" value="A">A</button>
+            <button id="ansB" class="answer" value="B">B</button>
+            <button id="ansC" class="answer" value="C">C</button>
+            <button id="ansD" class="answer" value="D">D</button>
         </div>
     </div>
 </div>

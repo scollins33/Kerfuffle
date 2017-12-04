@@ -1,13 +1,14 @@
 // set your JQuery variables
 const players = $('#players');
+const startGame = $('#startGame');
 const question = $('#question');
 const ansA = $('#ansA');
 const ansB = $('#ansB');
 const ansC = $('#ansC');
 const ansD = $('#ansD');
 
-let me = 'TEST_PLAYER';
-let myGame = 'SHORTID';
+let me = null;
+let myGame = null;
 let thisQuestion = null;
 let myAns = null;
 
@@ -20,13 +21,13 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
     // --------------------------------
 
     // Package Message & Send
-    function tellServer (pType, pUser, pGame, pQuestion, pAnswer, pCommand) {
+    function tellServer (pType, pCommand) {
         const msg = JSON.stringify({
             type: pType,
-            userId: pUser,
-            gameId: pGame,
-            questionId: pQuestion,
-            answerChoice: pAnswer,
+            userId: me,
+            gameId: myGame,
+            questionId: thisQuestion,
+            answerChoice: myAns,
             command: pCommand
         });
 
@@ -82,11 +83,7 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
     connection.onopen = function () {
         console.log('We got a connection!');
         tellServer('joining',
-            null,
-            myGame,
-            null,
-            null,
-            null);
+            null, null, null);
     };
 
     // listener for messages from the server
@@ -110,8 +107,15 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
                 updatePlayers(data.playerList);
                 break;
             // broadcast when a new question is pushed
+            case 'game-started':
+                // hide the start button and display the quiz structure
+                break;
+            case 'result':
+                console.log(data.command);
+                break;
             case 'new-question':
-                updateQuestion(data.questionInfo.questionText,
+                updateQuestion(data.
+                    data.questionInfo.questionText,
                     data.questionInfo.answerA,
                     data.questionInfo.answerB,
                     data.questionInfo.answerC,
@@ -126,15 +130,14 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
 
     // JQUERY EVENT LISTENERS
     // --------------------------------
+    startGame.on('click', function () {
+        tellServer('start-game', null, null, 'start');
+    });
 
-    $('button').on('click', function () {
+    $('.answer').on('click', function () {
         myAns = $(this).attr('value');
         tellServer('answer',
-            me,
-            myGame,
-            thisQuestion,
-            myAns,
-            null);
+            thisQuestion, myAns, null);
     });
 
 })();
