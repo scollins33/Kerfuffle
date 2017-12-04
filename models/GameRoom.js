@@ -25,7 +25,8 @@ class GameRoom {
         this.users = {};
         this.currentIndex = 0;
         this.intervalId = null;
-        this.inProgress = true;
+        this.inProgress = false;
+        this.isCompleted = false;
     }
 
     // SETTERS
@@ -90,7 +91,8 @@ class GameRoom {
             console.log(theirAnswer);
 
             if (theirAnswer === null) {
-                console.log(`${thisPlayer.userId} has no answer`);
+                thisPlayer.inform('result', thisPlayer.userId, this.gameId,
+                    null, this.currentIndex, null, 'You did not submit an answer.');
             }
             else if (theirAnswer === quesAnswer) {
                 thisPlayer.score += 1;
@@ -119,9 +121,10 @@ class GameRoom {
             this.serveQuestion();
 
             this.intervalId = setInterval(() => {
-                console.log('RUNNING INTERVAL');
                 // this = GameRoom
+
                 // Run Main Logic for this round
+                console.log(`RUNNING MAIN FOR ${this.gameId}`);
                 this.runMain();
 
                 // Iterate up to the next question
@@ -141,12 +144,25 @@ class GameRoom {
     // Adds user to the room
     addUser(pUser) {
         this.users[pUser.userId] = pUser;
+        this.updatePlayers();
     }
 
     // Removes user from the the room
     removeUser(pUser) {
         console.log(`${pUser.userId} has left Room # ${this.gameId}.`);
         delete this.users[pUser.userId];
+    }
+
+    updatePlayers() {
+        const playerList = Object.keys(this.users);
+        for (let each in this.users) {
+            const thisPlayer = this.users[each];
+            thisPlayer.inform('player-update',
+                thisPlayer.userId,
+                this.gameId,
+                playerList,
+                null, null, null);
+        }
     }
 
     // End the Interval (game over)
@@ -158,7 +174,6 @@ class GameRoom {
     closeConnections() {
         for (let each in this.users) {
             const thisPlayer = this.users[each];
-
             thisPlayer.connection.close();
         }
     }
@@ -169,7 +184,7 @@ class GameRoom {
         console.log(`${this.gameId} HAS ENDED`);
         this.endInterval();
         this.closeConnections();
-        this.inProgress = false;
+        this.isCompleted = true;
     }
 
 

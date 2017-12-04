@@ -44,6 +44,7 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
 
     // Update Player Roster
     function updatePlayers(pPlayerList) {
+        players.empty();
         pPlayerList.forEach((each) => {
             players.append(`<li>${each}</li>`)
         });
@@ -128,15 +129,7 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
             case 'player-update':
                 updatePlayers(data.playerList);
                 break;
-            // broadcast when a new question is pushed
-            case 'game-started':
-                // hide the start button and display the quiz structure
-                console.log('Game has start');
-                resultText.html('Game started!');
-                startTimer();
-                break;
             case 'result':
-                console.log(data.command);
                 resultText.html(data.command);
                 break;
             case 'new-question':
