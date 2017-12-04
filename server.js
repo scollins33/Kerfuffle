@@ -3,13 +3,14 @@ const http = require('http');
 const Websocket = require('ws');
 const app = require('./app');
 const db = require('./models/db');
-const sequelize_fixtures = require('sequelize-fixtures');
 const models = require('./models/db/index.js');
 // const questions = require('./models/db/Questions');
 // Game Imports
 const GameServer = require('./models/GameServer');
 const User = require('./models/User');
-
+let qs = [];
+qetQuestions();
+console.log('where am i ',qs);
 
 // Set Port
 const PORT = process.env.PORT || 3000;
@@ -115,4 +116,10 @@ function decode (pMessage) {
 }
 
 ///loading data
+function getQuestions() {
+    $.get("/api/todos", function(data) {
+        qs = data;
+
+    });
+}
 

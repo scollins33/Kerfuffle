@@ -55,27 +55,3 @@ module.exports = function(sequelize, DataTypes) {
     return questions;
 };
 
-function populate (queryInterface, sequelize) {
-
-    return [
-        queryInterface.bulkInsert('trivia_db.json', [
-            {question_text: "question", answer_a: "A", answer_b: "B", answer_c: "C", answer_d: "D", correct_answer: "answer",  createdAt: Date.now(), updatedAt: Date.now()},
-
-        ])
-    ];
-}
-populate();
-
-
-
-
-// Initial Build and sync
-
-// Add
-
-// Edit
-
-
-
-
-// Delete
