@@ -10,11 +10,15 @@ module.exports = function(app) {
         // findAll returns all entries for a table when used with no options
         db.questions.findAll({
 
-                limit: 100,
+                limit:  Math.floor(Math.random() * 500),
 
         }).then(function (dbquestions) {
+
+
             // We have access to the todos as an argument inside of the callback function
+
             res.json(dbquestions);
+
 
         });
     });
