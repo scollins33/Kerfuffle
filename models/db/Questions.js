@@ -1,35 +1,58 @@
 // Sequelize model for Questions Table
+const sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-    const qTable = sequelize.define("qTable", {
-        question: {
+    const questions = sequelize.define("questions", {
+        question_text: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
                 len: [1]
             }
         },
-        answerList: {
+        answer_a: {
             type: DataTypes.STRING,
             allowNull: false,
             len: [1]
         },
-        correctAnswer: {
+
+        answer_b: {
             type: DataTypes.STRING,
             allowNull: false,
+            len: [1]
+        },
+
+        answer_c: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            len: [1]
+        },
+
+        answer_d: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            len: [1]
+        },
+        correct_answer: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            len: [1]
+        },
+
+        createdAt: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            len: [1]
+        },
+
+        updatedAt: {
+            type: DataTypes.STRING,
+            allowNull: true,
             len: [1]
         }
     });
 
-    return qTable;
+
+
+    return questions;
 };
 
-// Initial Build and sync
-
-// Add
-
-// Edit
-
-
-
-
-// Delete

@@ -3,12 +3,12 @@ const http = require('http');
 const Websocket = require('ws');
 const app = require('./app');
 const db = require('./models/db');
-
-
+const models = require('./models/db/index.js');
+// const questions = require('./models/db/Questions');
 // Game Imports
 const GameServer = require('./models/GameServer');
 const User = require('./models/User');
-
+const sequelize = require('sequelize');
 
 // Set Port
 const PORT = process.env.PORT || 3000;
@@ -48,6 +48,7 @@ db.sequelize.sync({ force: true })
     server.listen(PORT, () => {
       console.log(`Server started on Port ${PORT}`);
     });
+
 });
 
 
@@ -123,3 +124,15 @@ function tellClient (pClient, pType, pUser, pGame, pPlayers, pQuestionId, pQuest
 function decode (pMessage) {
     return JSON.parse(pMessage);
 }
+
+
+// Routes
+// =============================================================
+require("./routes/routes.js")(app);
+
+
+
+
+
+
+
