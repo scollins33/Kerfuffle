@@ -8,9 +8,7 @@ const models = require('./models/db/index.js');
 // Game Imports
 const GameServer = require('./models/GameServer');
 const User = require('./models/User');
-let qs = [];
-qetQuestions();
-console.log('where am i ',qs);
+const sequelize = require('sequelize');
 
 // Set Port
 const PORT = process.env.PORT || 3000;
@@ -115,11 +113,14 @@ function decode (pMessage) {
     return JSON.parse(pMessage);
 }
 
-///loading data
-function getQuestions() {
-    $.get("/api/todos", function(data) {
-        qs = data;
 
-    });
-}
+// Routes
+// =============================================================
+require("./routes/routes.js")(app);
+
+
+
+
+
+
 

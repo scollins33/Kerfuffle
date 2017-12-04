@@ -1,4 +1,5 @@
 // Sequelize model for Questions Table
+const sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
     const questions = sequelize.define("questions", {
         question_text: {
