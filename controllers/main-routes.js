@@ -12,7 +12,7 @@ router.get('/rooms/:id', (req, res) => {
 });
 
 // GET for the SSL Cert
-app.get('/.well-known/acme-challenge/:content', function(req, res) {
+router.get('/.well-known/acme-challenge/:content', function(req, res) {
     res.send('kh7pYJ9BTBTPNqML0gwhigLvhmH05Z6ERG8rxrb92oc.BJB6rStNT_6mx9UkTabKe07QyCyvht9E0W2NJbyg7S0')
 });
 
