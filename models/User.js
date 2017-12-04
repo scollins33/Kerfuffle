@@ -28,6 +28,9 @@ class User {
         return this.connection;
     }
 
+    // ACTION FUNCTIONS
+    // --------------------------------
+
     // Package Message & Send
     inform(pType, pUser, pGame, pPlayers, pQuestionId, pQuestionInfo, pCommand) {
         this.connection.send(

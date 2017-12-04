@@ -78,11 +78,16 @@ wsserver.on('connection', (conn) => {
             // notification from the lobby players to start the game
             case 'start-game':
                 console.log(`Received Start command for ${data.gameId}`);
-                GameInstance.rooms[data.gameId].startGame();
+                GameInstance
+                    .rooms[data.gameId]
+                    .startGame();
                 break;
             // process answers as they flow in from players
             case 'answer':
-                GameInstance.rooms[data.gameId].users[data.userId].setAnswer(data.answerChoice);
+                GameInstance
+                    .rooms[data.gameId]
+                    .users[data.userId]
+                    .setAnswer(data.answerChoice);
                 break;
             default:
                 console.log('Received a message but could not understand it');

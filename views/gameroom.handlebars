@@ -1,26 +1,37 @@
 <div class="container">
-    <!-- Game Lobby and Start Button -->
     <div id="row">
-        <div class="col-xs-8">
-            <h1>This is the Player List</h1>
+        <div class="col-xs-4">
+            <!-- Game Lobby and Start Button -->
+            <span>This is the Player List</span>
             <ul id="players">
                 <li>Player_1</li>
-                <!-- PLayers Go Here - append <li> -->
+                <!-- Players Go Here - append <li> -->
             </ul>
         </div>
-        <div class="col-xs-4">
-            <button id="startGame" class="btn">Start Game</button>
-        </div>
-    </div>
-
-    <!-- Game Row with Q and Answers -->
-    <div class="row">
-        <div class="col-xs-12">
-            <span id="question">Question Text Here</span>
-            <button id="ansA" class="answer" value="A">A</button>
-            <button id="ansB" class="answer" value="B">B</button>
-            <button id="ansC" class="answer" value="C">C</button>
-            <button id="ansD" class="answer" value="D">D</button>
+        <div class="col-xs-8">
+            <!-- Start Button -->
+            <div class="row">
+                <button id="startGame" class="btn">Start Game</button>
+            </div>
+            <!-- Round Result and Timer -->
+            <div class="row">
+                <span id="resultText">Waiting for game to start...</span>
+                <br>
+                <span id="timeLeft">Time Left: </span>
+            </div>
+            <!-- Game Row with Q and Answers -->
+            <div class="row">
+                <br>
+                <span id="question">Question Text Here</span>
+                <br>
+                <button id="ansA" class="answer" value="A">A</button>
+                <br>
+                <button id="ansB" class="answer" value="B">B</button>
+                <br>
+                <button id="ansC" class="answer" value="C">C</button>
+                <br>
+                <button id="ansD" class="answer" value="D">D</button>
+            </div>
         </div>
     </div>
 </div>

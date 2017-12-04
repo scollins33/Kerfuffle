@@ -63,18 +63,36 @@ class GameRoom {
 		Update game.questionId
 		Push new question out
      */
+    serveQuestion() {
+        for (let each in this.users) {
+            const thisPlayer = this.users[each];
+
+            thisPlayer.inform('new-question',
+                thisPlayer.userId,
+                this.gameId,
+                null,
+                this.currentIndex,
+                this.questions[this.currentIndex],
+                null);
+        }
+    }
+
     runMain() {
         // this = GameRoom
         console.log(`Current Round: ${this.currentIndex}`);
         console.log(`currentIndex: ${this.currentIndex}`);
         console.log(`current Q answer: ${this.questions[this.currentIndex].answer}`);
         for (let each in this.users) {
-            let thisPlayer = this.users[each];
-            console.log(thisPlayer.currentAnswer);
-            if (thisPlayer.currentAnswer === null) {
+            const thisPlayer = this.users[each];
+            const theirAnswer = thisPlayer.currentAnswer;
+            const quesAnswer = this.questions[this.currentIndex].answer;
+
+            console.log(theirAnswer);
+
+            if (theirAnswer === null) {
                 console.log(`${thisPlayer.userId} has no answer`);
             }
-            else if (thisPlayer.currentAnswer === this.questions[this.currentIndex].answer) {
+            else if (theirAnswer === quesAnswer) {
                 thisPlayer.score += 1;
                 thisPlayer.inform('result', thisPlayer.userId, this.gameId,
                     null, this.currentIndex, null, 'You got it right!');
@@ -87,18 +105,18 @@ class GameRoom {
             thisPlayer.clearAnswer();
             console.log(thisPlayer.currentAnswer);
             console.log(thisPlayer.score);
-
-            // push new question
         }
     }
 
     // Start the game Interval to run main logic
-    // 15 seconds = 900,000 milliseconds
     startGame() {
         // this = GameRoom
         if (this.intervalId === null) {
             this.setQuestions();
             this.checkQuestions();
+
+            // serve 1st questions (index 0)
+            this.serveQuestion();
 
             this.intervalId = setInterval(() => {
                 console.log('RUNNING INTERVAL');
@@ -112,14 +130,12 @@ class GameRoom {
                 // If the index is past the array length, game is over
                 if (this.currentIndex >= this.questions.length) {
                     this.endGame();
+                } else {
+                    // serve next question
+                    this.serveQuestion();
                 }
             }, 15000)
         }
-    }
-
-    // End the Interval (game over)
-    endInterval() {
-        clearInterval(this.intervalId);
     }
 
     // Adds user to the room
@@ -129,8 +145,22 @@ class GameRoom {
 
     // Removes user from the the room
     removeUser(pUser) {
-        delete this.users[pUser];
-        console.log(`${pUser} has left the game room.`);
+        console.log(`${pUser.userId} has left Room # ${this.gameId}.`);
+        delete this.users[pUser.userId];
+    }
+
+    // End the Interval (game over)
+    endInterval() {
+        clearInterval(this.intervalId);
+    }
+
+    // close all User connections
+    closeConnections() {
+        for (let each in this.users) {
+            const thisPlayer = this.users[each];
+
+            thisPlayer.connection.close();
+        }
     }
 
     // End the game
@@ -138,20 +168,13 @@ class GameRoom {
     endGame() {
         console.log(`${this.gameId} HAS ENDED`);
         this.endInterval();
+        this.closeConnections();
         this.inProgress = false;
     }
 
 
     // GETTERS
     // --------------------------------
-
-    getQuestions() {
-        return this.questions;
-    }
-
-    getUsers() {
-        return this.users;
-    }
 
     checkQuestions() {
         console.log(this.questions);

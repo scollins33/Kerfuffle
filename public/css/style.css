@@ -7,6 +7,14 @@ body {
 
 }
 
+button {
+    color: black;
+}
+
+#question, .answer {
+    display: block;
+}
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,

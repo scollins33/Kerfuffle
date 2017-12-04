@@ -1,6 +1,8 @@
 // set your JQuery variables
 const players = $('#players');
 const startGame = $('#startGame');
+const resultText = $('#resultText');
+const timer = $('#timeLeft');
 const question = $('#question');
 const ansA = $('#ansA');
 const ansB = $('#ansB');
@@ -48,12 +50,28 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
     }
 
     // Update Question & Answers
-    function updateQuestion (pQuestion, pA, pB, pC, pD) {
-        question.html(pQuestion);
+    function updateQuestion (pQID, pQTEXT, pA, pB, pC, pD) {
+        thisQuestion = pQID;
+        question.html(pQTEXT);
         ansA.html(pA);
         ansB.html(pB);
         ansC.html(pC);
         ansD.html(pD);
+    }
+
+    // Round Timer to display time remaining until server sends new question
+    function startTimer() {
+        let ticker = 15;
+        timer.html(`Time Left: ${ticker}`);
+
+        let thisRoundTimer = setInterval(() => {
+            ticker -= 1;
+            timer.html(`Time Left: ${ticker}`);
+        }, 1000);
+
+        setTimeout(function() {
+            clearInterval(thisRoundTimer);
+            }, 15000);
     }
 
     // WEBSOCKET CODE
@@ -86,6 +104,10 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
             null, null, null);
     };
 
+    connection.onclose = function () {
+        resultText.html('Game Over!');
+    };
+
     // listener for messages from the server
     connection.onmessage = function (message) {
         // take the message we receive and parse the JSON from it
@@ -109,17 +131,22 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
             // broadcast when a new question is pushed
             case 'game-started':
                 // hide the start button and display the quiz structure
+                console.log('Game has start');
+                resultText.html('Game started!');
+                startTimer();
                 break;
             case 'result':
                 console.log(data.command);
+                resultText.html(data.command);
                 break;
             case 'new-question':
-                updateQuestion(data.
-                    data.questionInfo.questionText,
-                    data.questionInfo.answerA,
-                    data.questionInfo.answerB,
-                    data.questionInfo.answerC,
-                    data.questionInfo.answerD);
+                updateQuestion(data.questionId,
+                    data.questionInfo.question,
+                    data.questionInfo.A,
+                    data.questionInfo.B,
+                    data.questionInfo.C,
+                    data.questionInfo.D);
+                startTimer();
                 break;
             default:
                 console.log('Received a message but could not understand it');
