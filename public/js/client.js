@@ -46,7 +46,10 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
     function updatePlayers(pPlayerList) {
         players.empty();
         pPlayerList.forEach((each) => {
-            players.append(`<li>${each}</li>`)
+            players.append(`<li>
+                <span class="playerName">${each[0]}</span> | 
+                <span class="playerScore">${each[1]}</span>
+                </li>`);
         });
     }
 

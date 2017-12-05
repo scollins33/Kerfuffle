@@ -9,23 +9,15 @@ class User {
         this.score = 0;
     }
 
+    // SETTERS
+    // --------------------------------
+
     setAnswer(pAnswer) {
         this.currentAnswer = pAnswer;
     }
 
     clearAnswer() {
         this.currentAnswer = null;
-    }
-
-    // GETTERS
-    // --------------------------------
-
-    getUserId() {
-        return this.userId;
-    }
-
-    getWS() {
-        return this.connection;
     }
 
     // ACTION FUNCTIONS
