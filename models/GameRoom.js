@@ -164,6 +164,7 @@ class GameRoom {
     removeUser(pUser) {
         console.log(`${pUser.userId} has left Room # ${this.gameId}.`);
         delete this.users[pUser.userId];
+        this.updatePlayers();
     }
 
     updatePlayers() {
