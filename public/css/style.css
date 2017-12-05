@@ -23,8 +23,19 @@ ul {
     display: none;
 }
 
+.quote {
+    font-size: 24px;
+    text-align: center;
+    color: #f0ead6;
+    font-family: 'Neucha', cursive;
+    margin-top: 30px;
+    margin-bottom: 80px;    
+}
 
-
+.btn-link {
+    font-family: 'Quantico', sans-serif;
+    font-size: 26px;
+}
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
@@ -43,7 +54,10 @@ ul {
 .header h3 {
     margin-top: 0;
     margin-bottom: 0;
-    color: bisque;
+    /* color: bisque; */
+    color: #f0ead6;
+    font-family: 'Chewy', cursive;
+    font-size: 60px
 
 }
 
