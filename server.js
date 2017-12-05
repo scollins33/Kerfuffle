@@ -59,7 +59,7 @@ app.get('/rooms/:id', (req, res) => {
 
 
 // Sync Sequelize & Start the HTTP Server
-db.sequelize.sync({ force: false })
+db.sequelize.sync({ force: true })
     .then(() => {
         server.listen(PORT, () => {
             console.log(`Server started on Port ${PORT}`);

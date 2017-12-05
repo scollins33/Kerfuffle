@@ -34,18 +34,6 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false,
             len: [1]
-        },
-
-        createdAt: {
-            type: DataTypes.STRING,
-            allowNull: true,
-            len: [1]
-        },
-
-        updatedAt: {
-            type: DataTypes.STRING,
-            allowNull: true,
-            len: [1]
         }
     });
 
