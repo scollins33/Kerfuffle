@@ -37,6 +37,10 @@ ul#players {
     display: none;
 }
 
+h4 {
+    text-decoration: underline;
+    font-weight: bold;
+}
 
 .quote {
     font-size: 18px;
