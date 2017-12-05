@@ -8,69 +8,46 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
+const passport = require('passport');
+const session = require('express-session');
 
+const db = require('./models/db');
 const genericRoutes = require('./controllers/main-routes');
-const userRoutes = require('./controllers/user-routes');
+// const userRoutes = require('./controllers/user-routes');
+// const admin = require('./models/db/admin');
 
 // Init App
 const app = express();
-
-// View Engine - Handlebars
-app.set('views', path.join(__dirname, 'views'));
-app.engine('handlebars', exphbs({defaultLayout: 'layouts'}));
-app.set('view engine', 'handlebars');
 
 // BodyParser Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(cookieParser());
 
-// //Set Static Folder
-// app.use(session({
-//     secret: 'secret',
-//     saveUninitialized: true,
-//     resave: true
-// }));
+// Create Session
+app.use(session({
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
+// View Engine - Handlebars
+app.set('views', path.join(__dirname, 'views'));
+app.engine('handlebars', exphbs({defaultLayout: 'layouts'}));
+app.set('view engine', 'handlebars');
 
-//Passport init
-// app.use(passport.initialize());
-// app.use(passport.session());
+// Passport init
+var authRoute = require('./controllers/auth.js')(app, passport);
+require('./config/passport.js')(passport, db.admin);
 
-
-// //Express Validator
-// app.use(expressValidator({
-//     errorFormatter: function(param, msg, value) {
-//         let namespace = param.split('.')
-//             , root = namespace.shift()
-//             , formParam = root;
-//         while(namespace.length) {
-//             formParam += '[' + namespace.shift() * ']';
-//         }
-//         return {
-//             param : formParam,
-//             msg : msg,
-//             value : value
-//         };
-//     }
-// }));
-//
-// //connect flash middleware
-// app.use(flash());
-//
-// //Global Vars
-// app.use(function(req, res, next){
-//     res.locals.success_msg = req.flash('success_msg');
-//     res.locals.errors_msg = req.flash('error_msg');
-//     res.locals.error = req.flash('error');
-//     next();
-// });
 
 // Attach the static Public folder
 // bring in the routers
 app.use(express.static('public'));
 app.use('/', genericRoutes);
-app.use('/users', userRoutes);
+// app.use('/users', userRoutes);
 
 
 module.exports = app;
