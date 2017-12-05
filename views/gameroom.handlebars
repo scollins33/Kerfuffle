@@ -1,6 +1,7 @@
 <div class="container">
     <div id="row">
         <div class="col-xs-4">
+            <div class="well well-game-left">
             <!-- Game Lobby and Start Button -->
             <h4>Lobby Code: </h4>
             <span id="thisLobby"></span>
@@ -15,21 +16,25 @@
                 <!-- Players Go Here -->
                 <!--<li>Player_1: 0</li>-->
             </ul>
+            </div>
         </div>
+
         <div class="col-xs-8">
+            <div class="well well-game-right">
             <!-- Start Button -->
             <div class="row" id="startRow">
-                <button id="startGame" class="btn">Start Game</button>
+                <button id="startGame" class="btn btn-game">Start Game</button>
             </div>
+            <br>
             <!-- Round Result and Timer -->
             <div class="row">
-                <span id="resultText">Waiting for game to start...</span>
+                <span id="resultText" class="bg-warning">Waiting for game to start...</span>
             </div>
             <!-- Game Row with Question and Answers -->
             <div class="row hide-this" id="gameTable">
-                <span id="timeLeft">Time Left: </span>
+                <span id="timeLeft" class="bg-danger">Time Left: </span>
                 <br>
-                <span id="question">Question Text Here</span>
+                <span id="question" class="bg-info">Question Text Here</span>
                 <br>
                 <button id="ansA" class="answer" value="A">A</button>
                 <br>
@@ -38,6 +43,7 @@
                 <button id="ansC" class="answer" value="C">C</button>
                 <br>
                 <button id="ansD" class="answer" value="D">D</button>
+            </div>
             </div>
         </div>
     </div>
