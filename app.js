@@ -13,8 +13,6 @@ const session = require('express-session');
 
 const db = require('./models/db');
 const genericRoutes = require('./controllers/main-routes');
-// const userRoutes = require('./controllers/user-routes');
-// const admin = require('./models/db/admin');
 
 // Init App
 const app = express();
@@ -39,7 +37,7 @@ app.engine('handlebars', exphbs({defaultLayout: 'layouts'}));
 app.set('view engine', 'handlebars');
 
 // Passport init
-var authRoute = require('./controllers/auth.js')(app, passport);
+require('./controllers/auth.js')(app, passport);
 require('./config/passport.js')(passport, db.admin);
 
 
@@ -47,7 +45,6 @@ require('./config/passport.js')(passport, db.admin);
 // bring in the routers
 app.use(express.static('public'));
 app.use('/', genericRoutes);
-// app.use('/users', userRoutes);
 
 
 module.exports = app;

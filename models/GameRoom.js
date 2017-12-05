@@ -1,5 +1,5 @@
 const Questions = require('./db/questions');
-
+const questionList = require('../db/trivia_db');
 /*
     gameId
         > shortid of the game, also the key value in the GameServer
@@ -34,24 +34,35 @@ class GameRoom {
 
     // Use Sequelize Questions model to get random questions
     // Should be an array for easy looping / tracking
-    setQuestions() {
-        const testQs = [{
-            "question": "A flashing red traffic light signifies that a driver should do what?",
-            "A": "stop",
-            "B": "speed up",
-            "C": "proceed with caution",
-            "D": "honk the horn",
-            "answer": "A"
-        }, {
-            "question": "A knish is traditionally stuffed with what filling?",
-            "A": "potato",
-            "B": "creamed corn",
-            "C": "lemon custard",
-            "D": "raspberry jelly",
-            "answer": "A"
-        }];
+    setQuestions(pNumber) {
+        // sets up the vars in the function
+        let numQs = pNumber;
+        let randomQs = [];
+        let usedIDs = [];
+        let entries = 545;
 
-        this.questions = testQs;
+        function getID() {
+            let randID = Math.floor(Math.random() * entries);
+
+            if (usedIDs.includes(randID)) {
+                getID();
+            } else {
+                usedIDs.push(randID);
+                return randID;
+            }
+        }
+
+        // loops the number of times you told it to in the paramter
+        for (let i = 0; i < numQs; i++) {
+            // get a random number within 0 to the # of entries (from count query)
+            let someID = getID();
+
+            // add the question object to the array
+            randomQs.push(questionList[someID]);
+        }
+
+        // after looping, set the array
+        this.questions = randomQs;
     }
 
     // Main Game Logic
@@ -80,6 +91,7 @@ class GameRoom {
 
     runMain() {
         for (let each in this.users) {
+            console.log(`Current Index for ${this.gameId} = ${this.currentIndex}`);
             const thisPlayer = this.users[each];
             const theirAnswer = thisPlayer.currentAnswer;
             const quesAnswer = this.questions[this.currentIndex].answer;
@@ -108,8 +120,15 @@ class GameRoom {
     startGame() {
         // this = GameRoom
         if (this.intervalId === null) {
-            this.setQuestions();
+            this.setQuestions(10);
             this.checkQuestions();
+
+            for (let each in this.users) {
+                const thisPlayer = this.users[each];
+
+                thisPlayer.inform('starting-game',
+                    thisPlayer.userId, this.gameId, null, null, null, null);
+            }
 
             // serve 1st questions (index 0)
             this.serveQuestion();

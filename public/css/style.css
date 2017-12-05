@@ -19,6 +19,13 @@ ul {
     display: block;
 }
 
+.hide-this {
+    display: none;
+}
+
+
+
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,

@@ -2,7 +2,15 @@
     <div id="row">
         <div class="col-xs-4">
             <!-- Game Lobby and Start Button -->
-            <span>Player List</span>
+            <h4>Lobby Code: </h4>
+            <span id="thisLobby"></span>
+            <br>
+            <br>
+            <h4>Your Username: </h4>
+            <span id="thisPlayer"></span>
+            <br>
+            <br>
+            <h4>Player List</h4>
             <ul id="players">
                 <!-- Players Go Here -->
                 <!--<li>Player_1: 0</li>-->
@@ -10,17 +18,16 @@
         </div>
         <div class="col-xs-8">
             <!-- Start Button -->
-            <div class="row">
+            <div class="row" id="startRow">
                 <button id="startGame" class="btn">Start Game</button>
             </div>
             <!-- Round Result and Timer -->
             <div class="row">
                 <span id="resultText">Waiting for game to start...</span>
-                <br>
-                <span id="timeLeft">Time Left: </span>
             </div>
             <!-- Game Row with Question and Answers -->
-            <div class="row">
+            <div class="row hide-this" id="gameTable">
+                <span id="timeLeft">Time Left: </span>
                 <br>
                 <span id="question">Question Text Here</span>
                 <br>
