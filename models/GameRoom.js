@@ -1,4 +1,4 @@
-const Questions = require('./db/Questions');
+const Questions = require('./db/questions');
 
 /*
     gameId
@@ -79,16 +79,10 @@ class GameRoom {
     }
 
     runMain() {
-        // this = GameRoom
-        console.log(`Current Round: ${this.currentIndex}`);
-        console.log(`currentIndex: ${this.currentIndex}`);
-        console.log(`current Q answer: ${this.questions[this.currentIndex].answer}`);
         for (let each in this.users) {
             const thisPlayer = this.users[each];
             const theirAnswer = thisPlayer.currentAnswer;
             const quesAnswer = this.questions[this.currentIndex].answer;
-
-            console.log(theirAnswer);
 
             if (theirAnswer === null) {
                 thisPlayer.inform('result', thisPlayer.userId, this.gameId,
@@ -105,9 +99,9 @@ class GameRoom {
             }
 
             thisPlayer.clearAnswer();
-            console.log(thisPlayer.currentAnswer);
-            console.log(thisPlayer.score);
         }
+
+        this.updatePlayers();
     }
 
     // Start the game Interval to run main logic
@@ -154,9 +148,21 @@ class GameRoom {
     }
 
     updatePlayers() {
-        const playerList = Object.keys(this.users);
+        // build the player list with scores
+        let playerArray = Object.keys(this.users);
+        let playerList = [];
+
+        playerArray.forEach((each) => {
+            playerList.push([
+                this.users[each].userId,
+                this.users[each].score
+            ]);
+        });
+
+        // notify each player
         for (let each in this.users) {
             const thisPlayer = this.users[each];
+
             thisPlayer.inform('player-update',
                 thisPlayer.userId,
                 this.gameId,

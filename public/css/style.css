@@ -11,6 +11,10 @@ button {
     color: black;
 }
 
+ul {
+    list-style-type: none;
+}
+
 #question, .answer {
     display: block;
 }
