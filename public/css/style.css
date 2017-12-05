@@ -3,7 +3,7 @@ body {
     padding-top: 20px;
     padding-bottom: 20px;
     background-image: url("test.jpeg");
-    color: bisque;
+    color: #f0ead6;
 
 }
 
@@ -15,6 +15,11 @@ ul {
     list-style-type: none;
 }
 
+.nav {
+    font-family: 'Quantico', sans-serif;
+    font-size: 20px;
+}
+
 #question, .answer {
     display: block;
 }
@@ -24,18 +29,72 @@ ul {
 }
 
 .quote {
-    font-size: 24px;
+    font-size: 18px;
     text-align: center;
     color: #f0ead6;
-    font-family: 'Neucha', cursive;
+    font-family: 'Quantico', sans-serif;
     margin-top: 30px;
     margin-bottom: 80px;    
 }
 
-.btn-link {
+.well-game-left {
     font-family: 'Quantico', sans-serif;
-    font-size: 26px;
+    color: #23527c;
+    margin-top: 30px;
 }
+
+.well-game-right {
+    font-family: 'Quantico', sans-serif;
+    color: #23527c;
+    margin-top: 30px;
+    font-size: 16px;
+}
+
+.bg-info {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.btn-game {
+    font-family: 'Quantico', sans-serif;
+    font-size: 20px;
+    color: #23527c;
+}
+
+.btn-game:hover {
+    background-color: #99e4f8
+}
+
+.btn-game:active {
+    background-color: #99e4f8;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+.answer:hover {
+    background-color: #99e4f8;
+}
+
+.answer:active {
+    background-color: #99e4f8;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+.answer:focus {     
+    background-color: #31b0d5;    
+}
+
+#joinRoom {
+    width: 240px;
+    text-align: center;
+    color: #23527c;
+}
+
+#login {
+    color: #23527c ;
+}
+
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
@@ -54,11 +113,9 @@ ul {
 .header h3 {
     margin-top: 0;
     margin-bottom: 0;
-    /* color: bisque; */
     color: #f0ead6;
-    font-family: 'Chewy', cursive;
-    font-size: 60px
-
+    font-family: 'Quantico', sans-serif;
+    font-size: 40px
 }
 
 /* Custom page footer */
@@ -117,7 +174,7 @@ ul {
 
 .page-header {
     margin-top: 0;
-    color: bisque;
+    color: #f0ead6;
 }
 
 footer {
