@@ -1,13 +1,17 @@
 // set your JQuery variables
 const players = $('#players');
+const myname = $('#thisPlayer');
+const startGame = $('#startGame');
+const resultText = $('#resultText');
+const timer = $('#timeLeft');
 const question = $('#question');
 const ansA = $('#ansA');
 const ansB = $('#ansB');
 const ansC = $('#ansC');
 const ansD = $('#ansD');
 
-let me = 'TEST_PLAYER';
-let myGame = 'SHORTID';
+let me = null;
+let myGame = null;
 let thisQuestion = null;
 let myAns = null;
 
@@ -20,13 +24,13 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
     // --------------------------------
 
     // Package Message & Send
-    function tellServer (pType, pUser, pGame, pQuestion, pAnswer, pCommand) {
+    function tellServer (pType, pCommand) {
         const msg = JSON.stringify({
             type: pType,
-            userId: pUser,
-            gameId: pGame,
-            questionId: pQuestion,
-            answerChoice: pAnswer,
+            userId: me,
+            gameId: myGame,
+            questionId: thisQuestion,
+            answerChoice: myAns,
             command: pCommand
         });
 
@@ -41,18 +45,38 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
 
     // Update Player Roster
     function updatePlayers(pPlayerList) {
+        players.empty();
         pPlayerList.forEach((each) => {
-            players.append(`<li>${each}</li>`)
+            players.append(`<li>
+                <span class="playerName">${each[0]}</span> | 
+                <span class="playerScore">${each[1]}</span>
+                </li>`);
         });
     }
 
     // Update Question & Answers
-    function updateQuestion (pQuestion, pA, pB, pC, pD) {
-        question.html(pQuestion);
+    function updateQuestion (pQID, pQTEXT, pA, pB, pC, pD) {
+        thisQuestion = pQID;
+        question.html(pQTEXT);
         ansA.html(pA);
         ansB.html(pB);
         ansC.html(pC);
         ansD.html(pD);
+    }
+
+    // Round Timer to display time remaining until server sends new question
+    function startTimer() {
+        let ticker = 15;
+        timer.html(`Time Left: ${ticker}`);
+
+        let thisRoundTimer = setInterval(() => {
+            ticker -= 1;
+            timer.html(`Time Left: ${ticker}`);
+        }, 1000);
+
+        setTimeout(function() {
+            clearInterval(thisRoundTimer);
+            }, 15000);
     }
 
     // WEBSOCKET CODE
@@ -73,6 +97,7 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
 
     // set the gameId
     myGame = location.pathname.slice(7);
+    $('#thisLobby').html(myGame);
 
     // create the connection
     const connection = new WebSocket('ws://' + wsURL);
@@ -82,11 +107,11 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
     connection.onopen = function () {
         console.log('We got a connection!');
         tellServer('joining',
-            null,
-            myGame,
-            null,
-            null,
-            null);
+            null, null, null);
+    };
+
+    connection.onclose = function () {
+        resultText.html('Game Over!');
     };
 
     // listener for messages from the server
@@ -102,6 +127,7 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
             // welcome from server, set userId
             case 'welcome':
                 me = data.userId;
+                myname.html(me);
                 console.log(`My username: ${me}`);
                 console.log(`My Room #: ${myGame}`);
                 break;
@@ -109,13 +135,22 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
             case 'player-update':
                 updatePlayers(data.playerList);
                 break;
-            // broadcast when a new question is pushed
+            case 'starting-game':
+                $('#startRow').addClass('hide-this');
+                $('#gameTable').removeClass('hide-this');
+                resultText.html('Game has started!');
+                break;
+            case 'result':
+                resultText.html(data.command);
+                break;
             case 'new-question':
-                updateQuestion(data.questionInfo.questionText,
-                    data.questionInfo.answerA,
-                    data.questionInfo.answerB,
-                    data.questionInfo.answerC,
-                    data.questionInfo.answerD);
+                updateQuestion(data.questionId,
+                    data.questionInfo.question,
+                    data.questionInfo.A,
+                    data.questionInfo.B,
+                    data.questionInfo.C,
+                    data.questionInfo.D);
+                startTimer();
                 break;
             default:
                 console.log('Received a message but could not understand it');
@@ -126,15 +161,14 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
 
     // JQUERY EVENT LISTENERS
     // --------------------------------
+    startGame.on('click', function () {
+        tellServer('start-game', null, null, 'start');
+    });
 
-    $('button').on('click', function () {
+    $('.answer').on('click', function () {
         myAns = $(this).attr('value');
         tellServer('answer',
-            me,
-            myGame,
-            thisQuestion,
-            myAns,
-            null);
+            thisQuestion, myAns, null);
     });
 
 })();

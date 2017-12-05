@@ -7,6 +7,25 @@ body {
 
 }
 
+button {
+    color: black;
+}
+
+ul {
+    list-style-type: none;
+}
+
+#question, .answer {
+    display: block;
+}
+
+.hide-this {
+    display: none;
+}
+
+
+
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,

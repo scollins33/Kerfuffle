@@ -4,32 +4,39 @@ const db = require('../models/db');
 // Routes
 // =============================================================
 module.exports = function(app) {
-    let randomQs = [];
-    function tenQs() {
-        // GET route for getting all of the todos
-        app.get("/api/qs", function (req, res) {
-            // findAll returns all entries for a table when used with no options
-            db.questions.findAll({
+    // GET route for getting all of the todos
+    app.get("/api/qs", function (req, res) {
 
-                where: Math.floor(Math.random() * 500),
+        // defines the function
+      function setQuestions(pNumber) {
+            // sets up the vars in the function
+            let numQs = pNumber;
+            let randomQs = [];
+            let entries = 0;
+            // does a count() query against the questions table
+            qs = db.questions.count();
 
+            // loops the number of times you told it to in the paramter
+            for (let i = 0; i < numQs; i++) {
 
-            }).then(function (dbquestions) {
+                // get a random number within 0 to the # of entries (from count query)
+                let randID = Math.floor(Math.random() + 1);
 
+                // query for the question at the specific ID (the one we just randomly chose)
+                thisQ = db.questions.findOne( {where: {id: randID} });
+                console.log('what is this', thisQ);
+                // add the question object to the array
+                randomQs.push(thisQ);
 
-                // We have access to the todos as an argument inside of the callback function
+            }
+            // after looping, return the array
+            return randomQs;
+        }
+        // run the function and set the return to the variable
+        const someQs = setQuestions(10);
+        // send the array in the response
+        // THIS MIGHT NOT WORK, DONT KNOW IF YOU CAN SEND AN ARRAY WITH RES.JSON
+        res.json(someQs);
 
-                res.json(dbquestions);
-
-
-            });
-        });
-    }
-
-    let firstQ = Math.floor(Math.random(tenQs(10)));
-
-    randomQs.push(firstQ);
-    console.log('what is this',randomQs)
-
+    });
 };
-
