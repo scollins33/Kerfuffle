@@ -1,5 +1,6 @@
 // set your JQuery variables
 const players = $('#players');
+const myname = $('#thisPlayer');
 const startGame = $('#startGame');
 const resultText = $('#resultText');
 const timer = $('#timeLeft');
@@ -46,7 +47,10 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
     function updatePlayers(pPlayerList) {
         players.empty();
         pPlayerList.forEach((each) => {
-            players.append(`<li>${each}</li>`)
+            players.append(`<div>
+                <span class="playerName">${each[0]}</span>|
+                <span class="playerScore">${each[1]}</span>
+                </div>`);
         });
     }
 
@@ -93,6 +97,7 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
 
     // set the gameId
     myGame = location.pathname.slice(7);
+    $('#thisLobby').html(myGame);
 
     // create the connection
     const connection = new WebSocket('ws://' + wsURL);
@@ -122,12 +127,18 @@ window.WebSocket = window.WebSocket || window.MozWebSocket;
             // welcome from server, set userId
             case 'welcome':
                 me = data.userId;
+                myname.html(me);
                 console.log(`My username: ${me}`);
                 console.log(`My Room #: ${myGame}`);
                 break;
             // broadcast of the players in the room
             case 'player-update':
                 updatePlayers(data.playerList);
+                break;
+            case 'starting-game':
+                $('#startRow').addClass('hide-this');
+                $('#gameTable').removeClass('hide-this');
+                resultText.html('Game has started!');
                 break;
             case 'result':
                 resultText.html(data.command);

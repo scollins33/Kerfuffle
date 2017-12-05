@@ -1,5 +1,3 @@
-// Sequelize model for Questions Table
-const sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
     const questions = sequelize.define("questions", {
         question_text: {
@@ -35,18 +33,6 @@ module.exports = function(sequelize, DataTypes) {
         correct_answer: {
             type: DataTypes.STRING,
             allowNull: false,
-            len: [1]
-        },
-
-        createdAt: {
-            type: DataTypes.STRING,
-            allowNull: true,
-            len: [1]
-        },
-
-        updatedAt: {
-            type: DataTypes.STRING,
-            allowNull: true,
             len: [1]
         }
     });

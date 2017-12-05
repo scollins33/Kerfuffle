@@ -1,0 +1,112 @@
+<header id="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10">
+                <h1>
+                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Dashboard
+                    <small>Manage Your Trivia Site</small>
+                </h1>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section id="main">
+    <div class="container">
+        <!-- Create Row -->
+        <div class="row">
+            <h3>Create a New Question</h3>
+            <div id="create" class="col-xs-12">
+                <form class="form-horizontal">
+
+                    <div class="form-group">
+                        <div class="form-group col-xs-2">
+                            <label class="control-label" for="questionText">Question:</label>
+                        </div>
+                        <div class="form-group col-xs-8">
+                            <input class="form-control" id="questionText" type="text" name="questionText" placeholder="question text...">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-group col-xs-2">
+                            <label class="control-label" for="ansA">Answer A:</label>
+                        </div>
+                        <div class="form-group col-xs-8">
+                            <input class="form-control" id="ansA" type="text" name="ansA" placeholder="answer text...">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-group col-xs-2">
+                            <label class="control-label" for="ansB">Answer B:</label>
+                        </div>
+                        <div class="form-group col-xs-8">
+                            <input class="form-control" id="ansB" type="text" name="ansB" placeholder="answer text...">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-group col-xs-2">
+                            <label class="control-label" for="ansC">Answer C:</label>
+                        </div>
+                        <div class="form-group col-xs-8">
+                            <input class="form-control" id="ansC" type="text" name="ansC" placeholder="answer text...">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-group col-xs-2">
+                            <label class="control-label" for="ansD">Answer D:</label>
+                        </div>
+                        <div class="form-group col-xs-8">
+                            <input class="form-control" id="ansD" type="text" name="ansD" placeholder="answer text...">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-group col-xs-2">
+                            <label class="control-label" for="correct">Correct:</label>
+                        </div>
+                        <div class="form-group col-xs-8">
+                            <input class="form-control" id="correct" type="text" name="correct" placeholder="correct answer...">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <button type="submit" class="btn btn-success" id="createQuestion">Create Question</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Delete Row -->
+        <div class="row">
+            <h3>Delete a Question</h3>
+            <div id="delete" class="col-xs-12">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <div class="form-group col-xs-2">
+                            <label class="control-label" for="questionID">Quesiton ID</label>
+                        </div>
+                        <div class="form-group col-xs-8">
+                            <input class="form-control" id="questionID" type="number" name="questionID" placeholder="question ID...">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <button type="submit" class="btn btn-danger" id="deleteQuestion">Delete Question</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript" src="/js/crud.js"></script>

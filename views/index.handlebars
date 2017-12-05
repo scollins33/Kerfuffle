@@ -1,12 +1,27 @@
-<h2 class="page-header">Dashboard</h2>
+{{!-- <h2 class="page-header">Dashboard</h2> --}}
 
-<p> Welcome to Kerfuffle where everything's made up and the points don't matter!</p>
+<p class="quote"> Welcome to Kerfuffle where everything's made up and the points don't matter!</p>
 
-<form action="/rooms/new" method="post">
+{{!-- <form action="/rooms/new" method="post">
     <input type="submit" name="create" class="btn-link" value="Create Room">
 </form>
 
 <input type="text" name="room" id="joinRoom">
 <input type="submit" id="joinPost" class="btn-link" value="Join Room">
 
-<script type="text/javascript" src="/js/connect.js"></script>
+<script type="text/javascript" src="/js/connect.js"></script> --}}
+
+<div class="row">
+    <div class="col-xs-6" align="center">
+        <form action="/rooms/new" method="post">
+            <button id="startGame" class="btn btn-game">Create Room</button>
+        </form>
+    </div>
+    <div class="col-xs-6" align="center">
+        <input type="text" name="room" id="joinRoom" placeholder="Enter Lobby Code to Join Room">
+        <br>
+        <br>
+        <button id="startGame" class="btn btn-game">Join Room</button>
+        <script type="text/javascript" src="/js/connect.js"></script>
+    </div>
+</div>
