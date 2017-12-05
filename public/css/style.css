@@ -15,10 +15,19 @@ ul {
     list-style-type: none;
 }
 
+li {
+    list-style-type: none;
+}
+
+ul#players {
+    padding: initial;
+}
+
 .nav {
     font-family: 'Quantico', sans-serif;
     font-size: 20px;
 }
+
 
 #question, .answer {
     display: block;
@@ -27,6 +36,7 @@ ul {
 .hide-this {
     display: none;
 }
+
 
 .quote {
     font-size: 18px;
@@ -94,6 +104,7 @@ ul {
 #login {
     color: #23527c ;
 }
+>>>>>>> 43604ce90f3288c518a1b66105665111a69c97ea
 
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
